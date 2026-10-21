@@ -1,0 +1,88 @@
+# Fifteen checks: eight run or call your code, three read src/main.py as Python, two read its
+# text, and two read docs/summary.md. The checks call your functions directly with arguments of
+# their own and compare what they return, and the program check reads only the operator log at
+# the end of a run, never the story lines. Log values forgive extra spaces and letter case. The
+# button is pressed by a pretend operator with a script of presses, and time passes only when
+# your program calls sleep, so a loop that watches the button without sleeping is stopped.
+
+- description: "[CODE BOOK] CODE gains the AR and SK signals by assignment, and LETTERS holds one entry for every entry of CODE: build LETTERS after the two signals are added"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_morse.py::test_the_code_book_and_its_reverse
+
+- description: "[TO MORSE] to_morse(text) returns the patterns joined by single spaces, in upper or lower case, skipping any character that is not in CODE: to_morse of sos is ... --- ..."
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_morse.py::test_to_morse_looks_up_each_character
+
+- description: "[FROM MORSE] from_morse(pattern) returns the character for a pattern and ? for a pattern that is not a key of LETTERS: check with in before the lookup"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_morse.py::test_from_morse_looks_up_a_pattern
+
+- description: "[KEY] press_length(button, led) returns how many tenths of a second the button reads 0, with the LED on meanwhile and off after: sleep(0.1) and add 1 on every trip/iteration"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_morse.py::test_press_length_counts_tenths_of_a_second_and_lights_the_led
+
+- description: "[KEY] to_symbol(length) returns . for a length of 1 or 2 and - for 3 or more"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_morse.py::test_to_symbol_chooses_a_dot_or_a_dash
+
+- description: "[KEY] read_letter(button, led) waits for a press, then keys symbols until a second passes without one, and returns the pattern: two letters in a row come back as two patterns"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_morse.py::test_read_letter_returns_one_pattern_after_a_pause
+
+- description: "[KEY] A pause of 0.8 seconds stays inside the letter and a pause of 1.3 seconds ends it: count ten trips/iterations of sleep(0.1) while the button reads 1, and stop counting at a press"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_morse.py::test_a_short_pause_inside_a_letter_does_not_end_it
+
+- description: "[OPERATOR] Keying S O S then SK logs Message SOS, Letters 3 and Morse ... --- ..., and a pattern the book lacks becomes a ? in the message: main keeps reading letters until SK"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_morse.py::test_the_program_decodes_a_message_until_sk
+
+- description: "[CODE] LETTERS is built by a for loop over CODE that assigns LETTERS\\[CODE\\[character]] = character, or the same with your own names"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_structure.py::test_letters_is_built_by_looping_over_code
+
+- description: "[CODE] to_morse loops over the text and checks each character with in before the lookup"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_structure.py::test_to_morse_loops_over_the_text_and_checks_the_book
+
+- description: "[CODE] press_length, read_letter and main each have a while loop, and main calls read_letter, from_morse and to_morse"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_structure.py::test_the_key_is_read_in_while_loops_and_main_uses_the_functions
+
+- src/main.py:
+  - description: "[CODE] No TODO markers remain: delete each TODO comment once its code is written, including Author"
+    check: MatchFileFragment
+    options:
+      fragment: TODO
+      count: 0
+      exact: true
+  - description: "[CODE] At least six comments: explain why LETTERS is built after the signals are added, or what quiet counts"
+    check: CountSingleLineComments
+    options:
+      language: Python
+      count: 6
+      exact: false
+
+- docs/summary.md:
+  - description: "[SUMMARY] No TODO markers remain in docs/summary.md: replace each one with your answer, then delete it"
+    check: MatchFileFragment
+    options:
+      fragment: TODO
+      count: 0
+      exact: true
+  - description: "[SUMMARY] At least 150 words in docs/summary.md: answer every question in full sentences"
+    check: CountFileWords
+    options:
+      count: 150
+      exact: false

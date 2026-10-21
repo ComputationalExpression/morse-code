@@ -1,0 +1,87 @@
+name: Code Review
+description: A code review conducted with a Technical Leader (TL) or the course instructor.
+title: "Code Review: Lab 6, Morse Code"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill this out with the programmer present. Leave a box unchecked when the work does
+        not meet it. An unchecked box is information, not a punishment.
+  - type: input
+    attributes:
+      label: Reviewer
+      description: The GitHub username of the TL or instructor conducting this review
+      placeholder: your-github-username
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Functional requirements
+      description: Check each of the following satisfied functional requirements
+      options:
+        - label: "Code solves the issue presented"
+        - label: "Code functions, even if not fully solving the issue presented"
+        - label: "Performance of the code is acceptable"
+  - type: checkboxes
+    attributes:
+      label: Code style and legibility
+      description: Check each of the following checkboxes that describe code legibility
+      options:
+        - label: The code contains comments
+        - label: Variable names are accurate and appropriate
+        - label: The code is easy to read
+        - label: The code is formatted correctly
+  - type: markdown
+    attributes:
+      value: |
+        Walk through the code with the author, with the program running on their board. **Ask one
+        question per concept below, in your own words, about their own code.** Reviews happen at a
+        table where other students can hear, so vary the question from student to student: the
+        concept stays the same, the question does not. Pick from these or make up your own.
+
+        **Dictionary lookup (the code book and from_morse)**
+        - In `CODE`, what is a key and what is a value? Which would you use to look up the pattern for `K`?
+        - What error would `LETTERS[pattern]` raise for a pattern that is not in the book, and which line stops it?
+        - If you key a pattern that is not a letter, what does `from_morse` return, and what does the log show?
+
+        **Building LETTERS (the loop over CODE)**
+        - What does `character` hold on the first trip/iteration, and which entry does that trip add to `LETTERS`?
+        - Why does this loop come after the lines that add `AR` and `SK`? What would `LETTERS` be missing otherwise?
+        - How many entries do `CODE` and `LETTERS` hold, and why are the numbers equal?
+
+        **Timing a press (press_length and to_symbol)**
+        - What does `length` count, and how long is one trip/iteration of the loop?
+        - A press lasts about half a second. What does `press_length` return, and which symbol is that?
+        - Why does the LED go on inside the loop and off after it?
+
+        **Ending a letter (read_letter)**
+        - What does `quiet` count, and what is its value when the operator waits a full second?
+        - Why does the inner `while` have two conditions joined with `and`?
+        - The operator pauses for half a second between two presses. Which lines keep that inside one letter?
+
+        Check a concept when the answer shows the understanding described, whichever question you asked.
+  - type: checkboxes
+    attributes:
+      label: Code walkthrough
+      description: One box per concept. Check it when the author's answer to your question showed the understanding described.
+      options:
+        - label: "Dictionary lookup: the author can explain keys and values in CODE and why from_morse checks with in before the lookup"
+        - label: "Building LETTERS: the author can explain what the loop over CODE adds on each trip/iteration and why it comes after AR and SK are added"
+        - label: "Timing a press: the author can explain what press_length counts and why a short press is a dot"
+        - label: "Ending a letter: the author can explain what quiet counts and what stops the inner while loop"
+        - label: "The author described their process well, communicating confidence and understanding of their own code"
+  - type: textarea
+    attributes:
+      label: The Good, The Bad, The Ugly
+      description: Write a short note with at least 3 aspects done well, and 3 aspects on which the code could be improved
+      value: |
+        #### Positives
+        1.
+        2.
+        3.
+        #### Improvements
+        1.
+        2.
+        3.
+    validations:
+      required: true
