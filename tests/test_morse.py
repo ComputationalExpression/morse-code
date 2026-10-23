@@ -161,6 +161,19 @@ def test_the_code_book_and_its_reverse():
         )
 
 
+def test_read_code_book_loads_a_csv_file(tmp_path):
+    # Once with a newline at the end of the last line and once without one.
+    for ending in ("\n", ""):
+        path = tmp_path / "book.csv"
+        path.write_text("character,pattern\nQ,--.-\nE,.\nT,-" + ending, encoding="utf-8")
+        got = program.read_code_book(str(path))
+        want = {"Q": "--.-", "E": ".", "T": "-"}
+        assert got == want, (
+            f"read_code_book returned {got!r} for a file of Q, E and T, expected {want!r}: skip the header line, "
+            f"split each line at the comma, and strip the newline so it is not part of the pattern"
+        )
+
+
 def test_to_morse_looks_up_each_character():
     cases = [("SOS", "... --- ..."), ("sos", "... --- ..."), ("A B", ".- -..."), ("HI5", ".... .. ....."), ("", "")]
     for text, want in cases:
@@ -205,9 +218,10 @@ def test_read_letter_returns_one_pattern_after_a_pause():
 
         got = with_key(key, action)
         assert got == letters, f"keying {letters} gave {got} from read_letter, expected {letters}: a second without a press ends a letter"
+    check_pauses()
 
 
-def test_a_short_pause_inside_a_letter_does_not_end_it():
+def check_pauses():
     # 0.8 seconds between the dot and the dash is under a second, so one letter.
     key = Key([(0.0, DOT), (DOT + 0.8, DOT + 0.8 + DASH)])
     got = call(key, program.read_letter)

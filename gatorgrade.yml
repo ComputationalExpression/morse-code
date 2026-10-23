@@ -5,10 +5,15 @@
 # button is pressed by a pretend operator with a script of presses, and time passes only when
 # your program calls sleep, so a loop that watches the button without sleeping is stopped.
 
-- description: "[CODE BOOK] CODE gains the AR and SK signals by assignment, and LETTERS holds one entry for every entry of CODE: build LETTERS after the two signals are added"
+- description: "[CODE BOOK] CODE is read from morse.csv, gains the AR and SK signals by assignment, and LETTERS holds one entry for every entry of CODE: build LETTERS after the two signals are added"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_the_code_book_and_its_reverse
+
+- description: "[CODE BOOK] read_code_book(filename) returns a dictionary from each character to its pattern: skip the header line, split each line at the comma, and strip the newline"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_morse.py::test_read_code_book_loads_a_csv_file
 
 - description: "[TO MORSE] to_morse(text) returns the patterns joined by single spaces, in upper or lower case, skipping any character that is not in CODE: to_morse of sos is ... --- ..."
   check: ExecuteCommand
@@ -30,25 +35,20 @@
   options:
     command: uv run pytest tests/test_morse.py::test_to_symbol_chooses_a_dot_or_a_dash
 
-- description: "[KEY] read_letter(button, led) waits for a press, then keys symbols until a second passes without one, and returns the pattern: two letters in a row come back as two patterns"
+- description: "[KEY] read_letter(button, led) waits for a press, then keys symbols until a second passes without one, and returns the pattern, and a pause of 0.8 seconds stays inside the letter while 1.3 seconds ends it: count ten trips/iterations of sleep(0.1) while the button reads 1, and stop counting at a press"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_read_letter_returns_one_pattern_after_a_pause
-
-- description: "[KEY] A pause of 0.8 seconds stays inside the letter and a pause of 1.3 seconds ends it: count ten trips/iterations of sleep(0.1) while the button reads 1, and stop counting at a press"
-  check: ExecuteCommand
-  options:
-    command: uv run pytest tests/test_morse.py::test_a_short_pause_inside_a_letter_does_not_end_it
 
 - description: "[OPERATOR] Keying S O S then SK logs Message SOS, Letters 3 and Morse ... --- ..., and a pattern the book lacks becomes a ? in the message: main keeps reading letters until SK"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_the_program_decodes_a_message_until_sk
 
-- description: "[CODE] LETTERS is built by a for loop over CODE that assigns LETTERS\\[CODE\\[character]] = character, or the same with your own names"
+- description: "[CODE] read_code_book uses with open, a for loop over the lines and split, and LETTERS is built by a for loop over CODE that assigns LETTERS\\[CODE\\[character]] = character, or the same with your own names"
   check: ExecuteCommand
   options:
-    command: uv run pytest tests/test_structure.py::test_letters_is_built_by_looping_over_code
+    command: uv run pytest tests/test_structure.py::test_the_books_are_built_in_loops
 
 - description: "[CODE] to_morse loops over the text and checks each character with in before the lookup"
   check: ExecuteCommand

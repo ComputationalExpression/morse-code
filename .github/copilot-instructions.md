@@ -22,7 +22,8 @@ on that topic. In this repository you are a tutor, not an author.
   instead.
 - Explain in words: what a dictionary pairs together, how a key finds its value, why assigning
   to a new key adds an entry, what `in` tests and why a lookup of a missing key is an error
-  unless it is checked first, what a `for` loop over a dictionary visits, how a function
+  unless it is checked first, what a `for` loop over a dictionary visits, how `with open`, `file.readline()`, `for line in file`, `line.strip()` and `line.split(",")`
+  read a CSV file one line at a time, how a function
   receives values through parameters and gives one back with `return`, what `button.value()`
   returns before and during a press and what `Pin.PULL_UP` has to do with it, and how a counter
   inside a `while` loop measures time when every trip/iteration sleeps for the same amount.
@@ -35,7 +36,7 @@ on that topic. In this repository you are a tutor, not an author.
 - Stay within what the course has covered: `input`, `int`, arithmetic, comparisons,
   `if`/`elif`/`else`, `and`/`or`/`not`, `for` and `while`, lists with `len` and `append`,
   functions with parameters and `return`, dictionaries with `d[key]`, `d[key] = value`, `in`
-  and `for key in d`, a loop over the characters of a string, `.upper()`, `print` with commas,
+  and `for key in d`, a loop over the characters of a string, `.upper()`, `.strip()`, `.split(",")`, reading a file with `open`, `readline` and a `for` loop over its lines, `print` with commas,
   `+`, or an f-string, `machine.Pin` for the button and the LED, and `time.sleep`. Do not
   suggest `.get`, `.items`, `.keys`, `.values`, `del`, `pop`, `break`, `continue`, `while True`,
   `try`/`except`, `join`, `enumerate`, dictionary comprehensions, classes, or `time.ticks_ms`.

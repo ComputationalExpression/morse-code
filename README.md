@@ -12,8 +12,8 @@ invented a code that spells every letter with short and long signals, called dot
 An operator pressed a key to send them and listened to a sounder on the other end.
 
 In this lab, your push button is the telegraph key and the built-in LED is the sounder. You
-write a code book as a dictionary, and use it in both directions: to turn a message into
-dots and dashes, and to turn the dots and dashes you key back into letters. A short press is
+read a code book from a file into a dictionary, and use it in both directions: to turn a
+message into dots and dashes, and to turn the dots and dashes you key back into letters. A short press is
 a dot, a long press is a dash, and a pause of one second ends a letter.
 
 ## Contents
@@ -45,7 +45,7 @@ integrated development environments (IDEs), command-line tools, and version cont
 
 Specifically, by the end of this lab you should be able to:
 
-* store pairs in a dictionary, add an entry by assigning to a new key, and look a value up by its key
+* read a CSV file into a dictionary, add an entry by assigning to a new key, and look a value up by its key
 * test whether a key is in a dictionary with `in` before a lookup that could fail
 * build one dictionary from another with a `for` loop over its keys
 * define functions with parameters that return a value, and call them from other functions
@@ -76,9 +76,11 @@ weeks before them.
 stay fixed, because the automated checks depend on them: the functions in the table below keep
 their names and parameters, and the operator log at the end keeps its labels.
 
-**The code book.** `CODE` is a dictionary provided at the top of `src/main.py`. Each key is a
-character and each value is its pattern of dots and dashes, such as `"S": "..."`. You add two
-signals that are not letters: `"AR"`, which is `.-.-.`, and `"SK"`, which is `...-.-`. Then you
+**The code book.** The file `morse.csv` is provided in the top folder of this repository: a
+header line, then one line for each letter and digit with the character, a comma and its pattern
+of dots and dashes, such as `S,...`. `read_code_book` reads it into a dictionary, and `CODE` holds
+that dictionary. Each key is a character and each value is its pattern. You add two signals that
+are not letters: `"AR"`, which is `.-.-.`, and `"SK"`, which is `...-.-`. Then you
 build `LETTERS`, the same book read backwards: each pattern is a key and its value is the
 character. A `for` loop over the keys of `CODE` builds it, and it has to come after the two
 signals are added, so that they are flipped as well.
@@ -100,6 +102,7 @@ match exactly, because the automated checks call each one directly.
 
 |Function |What it does |
 |:--------|:------------|
+|`read_code_book(filename)` |Returns a dictionary from each character in the CSV file to its pattern. It skips the header line, splits each line at the comma, and strips the newline from the line first, so that a pattern is `".-"` and not `".-\n"` |
 |`to_morse(text)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces. A character that is not in `CODE`, such as a space, is skipped. `to_morse("sos")` returns `"... --- ..."` |
 |`from_morse(pattern)` |Returns the character for `pattern`, or `"?"` when `pattern` is not a key of `LETTERS` |
 |`press_length(button, led)` |Returns how many tenths of a second the button stays down. While `button.value()` is `0`, the LED is on, the function calls `sleep(0.1)`, and `length` goes up by 1. When the button is released the LED goes off |
@@ -155,7 +158,7 @@ Morse: ... --- ...
 
 ## Getting started
 
-Open `src/main.py` and work through the `TODO` markers in order. The first seven steps are
+Open `src/main.py` and work through the `TODO` markers in order. The first nine steps are
 functions and dictionaries that do not need the board, so check each one as you finish it:
 
 ```text
@@ -176,6 +179,11 @@ hardware. Plug in the board, open `src/main.py`, and click **Run** in the bar al
 of the window. **Board Connected** must show beside it:
 
 ![The bar along the bottom of VS Code, showing Board Connected and the Run button](images/run-button.png)
+
+`morse.csv` has to be on the board too, because the program opens it when it starts, and the Run
+button sends only the file you have open. Open the folder of this lab itself in VS Code (File,
+Open Folder), right-click `morse.csv` in the Explorer, choose MicroPico, then **Upload File to
+Board**. It stays on the board, so you do this once.
 
 Press the button briefly for a dot and for a little longer for a dash, and leave a full second
 between letters. Key `...-.-` to end.
@@ -204,14 +212,14 @@ also prints a `uv run pytest ...` command. Run it: the last lines say what a fun
 and what was expected. Eleven of the checks are about your code:
 
 * `CODE` gains `AR` and `SK`, and `LETTERS` holds one entry for every entry of `CODE`
+* `read_code_book` returns a dictionary from the characters of a CSV file to their patterns
 * `to_morse` returns the patterns for a text, skipping characters that are not in the book
 * `from_morse` returns the character for a pattern, and `?` for one that is not in the book
 * `press_length` returns the length of a press in tenths of a second, with the LED on during it
 * `to_symbol` returns a dot or a dash
-* `read_letter` returns the pattern of one letter and ends it after a second without a press
-* a pause shorter than a second stays inside the letter
+* `read_letter` returns the pattern of one letter, ends it after a second without a press, and keeps a pause shorter than a second inside the letter
 * keying a message and then `SK` logs the decoded message, its length and its patterns
-* `LETTERS` is built by a loop over `CODE`, and `to_morse` checks each character with `in`
+* `read_code_book` uses `with open` and a loop over the lines, `LETTERS` is built by a loop over `CODE`, and `to_morse` checks each character with `in`
 * `press_length`, `read_letter` and `main` have `while` loops, and `main` calls the functions
 * no `TODO` markers remain, and there are at least six comments
 
@@ -250,8 +258,8 @@ and about your own code, so the questions differ from student to student. Be rea
 
 * **Dictionary lookup**: explain what a key and a value are in `CODE`, and why `from_morse`
   checks with `in` before it looks a pattern up
-* **Building LETTERS**: explain what the loop over `CODE` does on each trip/iteration, and why
-  it comes after `AR` and `SK` are added
+* **Building the books**: explain what `read_code_book` does with each line of `morse.csv`, what
+  the loop over `CODE` does on each trip/iteration, and why it comes after `AR` and `SK` are added
 * **Timing a press**: explain what `press_length` counts, and why a press under three tenths of
   a second is a dot
 * **Ending a letter**: explain what `quiet` counts and what stops the inner `while` loop

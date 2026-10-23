@@ -34,7 +34,17 @@ def called_names(node):
     return names
 
 
-def test_letters_is_built_by_looping_over_code():
+def test_the_books_are_built_in_loops():
+    book = function("read_code_book")
+    assert inside(book, ast.With), "found no `with open(...)` in read_code_book: open the file with a with block"
+    assert inside(book, ast.For), "found no for loop in read_code_book: visit each line of the file"
+    splits = [
+        n for n in inside(book, ast.Call)
+        if isinstance(n.func, ast.Attribute) and n.func.attr == "split"
+    ]
+    assert splits, "found no .split(...) in read_code_book: split each line at the comma"
+    stores = [n for n in inside(book, ast.Subscript) if isinstance(n.ctx, ast.Store)]
+    assert stores, "found no `book[...] = ...` in read_code_book: each line adds one entry"
     loops = [
         loop for loop in inside(tree(), ast.For)
         if isinstance(loop.iter, ast.Name) and loop.iter.id == "CODE"

@@ -4,8 +4,9 @@ Answer each question in full sentences. Each answer starts as a placeholder mark
 every marker with your own writing, and delete the marker itself. The minimum word count for
 this document is `150` words.
 
-> `LETTERS` is built by a loop over `CODE`, after the lines that add `AR` and `SK`. Explain what
-> each key and value of `LETTERS` is, and what `from_morse("...-.-")` would return if the loop
+> `read_code_book` reads `morse.csv` into `CODE`, and `LETTERS` is built by a loop over `CODE`
+> after the lines that add `AR` and `SK`. Explain what each line of the file becomes in `CODE`,
+> why each line is stripped, and what `from_morse("...-.-")` would return if the `LETTERS` loop
 > ran before those two lines.
 
 TODO

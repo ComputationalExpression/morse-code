@@ -44,8 +44,9 @@ body:
         - What error would `LETTERS[pattern]` raise for a pattern that is not in the book, and which line stops it?
         - If you key a pattern that is not a letter, what does `from_morse` return, and what does the log show?
 
-        **Building LETTERS (the loop over CODE)**
-        - What does `character` hold on the first trip/iteration, and which entry does that trip add to `LETTERS`?
+        **Building the books (read_code_book and the loop over CODE)**
+        - What does one line of `morse.csv` become in `CODE`, and why is each line stripped before it is split?
+        - What does `character` hold on the first trip/iteration of the loop over `CODE`, and which entry does that trip add to `LETTERS`?
         - Why does this loop come after the lines that add `AR` and `SK`? What would `LETTERS` be missing otherwise?
         - How many entries do `CODE` and `LETTERS` hold, and why are the numbers equal?
 
@@ -66,7 +67,7 @@ body:
       description: One box per concept. Check it when the author's answer to your question showed the understanding described.
       options:
         - label: "Dictionary lookup: the author can explain keys and values in CODE and why from_morse checks with in before the lookup"
-        - label: "Building LETTERS: the author can explain what the loop over CODE adds on each trip/iteration and why it comes after AR and SK are added"
+        - label: "Building the books: the author can explain what read_code_book does with each line of morse.csv, what the loop over CODE adds on each trip/iteration, and why it comes after AR and SK are added"
         - label: "Timing a press: the author can explain what press_length counts and why a short press is a dot"
         - label: "Ending a letter: the author can explain what quiet counts and what stops the inner while loop"
         - label: "The author described their process well, communicating confidence and understanding of their own code"
