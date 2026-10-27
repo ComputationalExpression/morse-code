@@ -50,6 +50,7 @@ Specifically, by the end of this lab you should be able to:
 * build one dictionary from another with a `for` loop over its keys
 * define functions with parameters that return a value, and call them from other functions
 * time a button press with a `while` loop and a counter
+* update a counter or a string with `+=`, and count down with `range(start, stop, step)`
 
 ## The circuit
 
@@ -92,8 +93,10 @@ character, and gives `?` for a pattern that is not in the book.
 a dash. `read_letter` keys symbols until a second passes without a press, and returns the
 pattern of one letter.
 
-**The operator.** `main` reads letters one at a time until the operator keys `SK`, which is
-the signal for the end of the transmission, and ends with the operator log.
+**The operator.** `main` counts down from 3 with `range(3, 0, -1)`, blinking the sounder once
+a second, so the operator knows when to start. Then it reads letters one at a time until the
+operator keys `SK`, which is the signal for the end of the transmission, and ends with the
+operator log.
 
 ### The functions
 
@@ -103,7 +106,7 @@ match exactly, because the automated checks call each one directly.
 |Function |What it does |
 |:--------|:------------|
 |`read_code_book(filename)` |Returns a dictionary from each character in the CSV file to its pattern. It skips the header line, splits each line at the comma, and strips the newline from the line first, so that a pattern is `".-"` and not `".-\n"` |
-|`to_morse(text)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces. A character that is not in `CODE`, such as a space, is skipped. `to_morse("sos")` returns `"... --- ..."` |
+|`to_morse(text)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces, adding each pattern to the result with `+=`. A character that is not in `CODE`, such as a space, is skipped. `to_morse("sos")` returns `"... --- ..."` |
 |`from_morse(pattern)` |Returns the character for `pattern`, or `"?"` when `pattern` is not a key of `LETTERS` |
 |`press_length(button, led)` |Returns how many tenths of a second the button stays down. While `button.value()` is `0`, the LED is on, the function calls `sleep(0.1)`, and `length` goes up by 1. When the button is released the LED goes off |
 |`to_symbol(length)` |Returns `"."` when `length` is less than `3`, and `"-"` otherwise |
@@ -143,6 +146,10 @@ MORSE CODE
 ==================================================
 What is your name? JJ
 Key a message, JJ - end it with SK
+3
+2
+1
+Key now
 ... is S
 --- is O
 ... is S
@@ -219,8 +226,8 @@ and what was expected. Eleven of the checks are about your code:
 * `to_symbol` returns a dot or a dash
 * `read_letter` returns the pattern of one letter, ends it after a second without a press, and keeps a pause shorter than a second inside the letter
 * keying a message and then `SK` logs the decoded message, its length and its patterns
-* `read_code_book` uses `with open` and a loop over the lines, `LETTERS` is built by a loop over `CODE`, and `to_morse` checks each character with `in`
-* `press_length`, `read_letter` and `main` have `while` loops, and `main` calls the functions
+* `read_code_book` uses `with open` and a loop over the lines, `LETTERS` is built by a loop over `CODE`, and `to_morse` checks each character with `in` and builds its result with `+=`
+* `press_length`, `read_letter` and `main` have `while` loops, `main` counts down with `range(3, 0, -1)`, and `main` calls the functions
 * no `TODO` markers remain, and there are at least six comments
 
 Partial credit is proportional: passing 8 of 11 checks earns `(8 ÷ 11) × 3.0 = 2.2` points.

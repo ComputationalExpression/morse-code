@@ -42,9 +42,9 @@ from time import sleep
 
 # TODO 5: write a function `to_morse(text)` that returns the patterns for the
 # characters of text, separated by single spaces. Start `result` as an empty
-# string and loop over text.upper(). Add a character's pattern only if the
-# character is in CODE, with a space before it unless `result` is still empty,
-# so a space or a ? is skipped. to_morse("sos") returns "... --- ..."
+# string and loop over text.upper(). Add a character's pattern to `result` with
+# +=, only if the character is in CODE, and with a space before it unless
+# `result` is still empty, so a space or a ? is skipped. to_morse("sos") returns "... --- ..."
 
 # TODO 6: write a function `from_morse(pattern)` that returns the character
 # for a pattern from LETTERS, or "?" when the pattern is not a key of LETTERS.
@@ -80,13 +80,20 @@ def main():
     print("MORSE CODE")
     print("=" * 50)
 
-    # TODO 10: ask the user's name, save it to a variable called `name`. Set
-    # `message` to an empty string and `letter` to an empty string. While
-    # `letter` is not "SK": save read_letter(button, led) to `pattern`, save
-    # from_morse(pattern) to `letter`, print the pattern and the letter, and if
-    # `letter` is not "SK", add it to `message`
+    # TODO 10: ask the user's name, save it to a variable called `name`, and
+    # print a line asking the operator to key a message ending with SK
 
-    # TODO 11: print a blank line, a line of 50 "=", "OPERATOR LOG:" followed by
+    # TODO 11: count down before the first letter with a for loop over
+    # range(3, 0, -1). On every trip/iteration, print the count, then turn the
+    # LED on, sleep(0.5), turn it off and sleep(0.5). After the loop, print a
+    # line telling the operator to start keying
+
+    # TODO 12: set `message` to an empty string and `letter` to an empty
+    # string. While `letter` is not "SK": save read_letter(button, led) to
+    # `pattern`, save from_morse(pattern) to `letter`, print the pattern and the
+    # letter, and if `letter` is not "SK", add it to `message` with +=
+
+    # TODO 13: print a blank line, a line of 50 "=", "OPERATOR LOG:" followed by
     # the name, and another line of 50 "=". Then print these lines, each a
     # label followed by its value:
     # Message: `message`

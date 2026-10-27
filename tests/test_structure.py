@@ -65,9 +65,11 @@ def test_to_morse_loops_over_the_text_and_checks_the_book():
         if any(isinstance(op, (ast.In, ast.NotIn)) for op in n.ops)
     ]
     assert checks, "found no `in` or `not in` check in to_morse: skip a character the book does not have"
+    adds = [n for n in inside(body, ast.AugAssign) if isinstance(n.op, ast.Add)]
+    assert adds, "found no += in to_morse: add each pattern to the result with result += ..."
 
 
-def test_the_key_is_read_in_while_loops_and_main_uses_the_functions():
+def test_the_key_is_read_in_while_loops_and_main_counts_down_and_uses_the_functions():
     for name, least in (("press_length", 1), ("read_letter", 2), ("main", 1)):
         loops = inside(function(name), ast.While)
         assert len(loops) >= least, f"found {len(loops)} while loops in {name}, expected at least {least}"
@@ -76,6 +78,12 @@ def test_the_key_is_read_in_while_loops_and_main_uses_the_functions():
         if isinstance(n.func, ast.Attribute) and n.func.attr == "value"
     ]
     assert watching, "found no button.value() call in press_length: the loop runs while the button reads 0"
+    countdowns = [
+        loop for loop in inside(function("main"), ast.For)
+        if isinstance(loop.iter, ast.Call) and isinstance(loop.iter.func, ast.Name)
+        and loop.iter.func.id == "range" and len(loop.iter.args) == 3
+    ]
+    assert countdowns, "found no for loop over range(start, stop, step) in main: count down before the first letter with range(3, 0, -1)"
     used = called_names(function("main"))
     missing = [name for name in ("read_letter", "from_morse", "to_morse") if name not in used]
     assert not missing, f"main does not call {', '.join(missing)}: main keys letters, decodes them and prints the patterns"

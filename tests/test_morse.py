@@ -35,14 +35,17 @@ DASH = 0.5
 class Key:
     """The button and the LED, with a pretend operator at the button.
 
-    `presses` is a list of (start, end) times in seconds. The button reads 0
-    while the clock is inside one of them, and `clock` adds up every sleep.
+    `presses` is a list of (start, end) times in seconds, counted from the
+    first time the button is read, so a countdown before it shifts nothing. The
+    button reads 0 while the clock is inside one of them, and `clock` adds up
+    every sleep.
     """
 
     def __init__(self, presses):
         self.presses = list(presses)
         self.clock = 0.0
         self.reads = 0
+        self.first = None
         self.roles = {}
         self.lit = False
         self.on_calls = 0
@@ -78,7 +81,10 @@ class Key:
                 f"the button was read {MOST_READS} times with the clock at {self.clock:.1f} seconds, "
                 f"so the program was stuck waiting: every loop that watches the button has to sleep"
             )
-        return 0 if any(start <= self.clock < end for start, end in self.presses) else 1
+        if self.first is None:
+            self.first = self.clock
+        now = self.clock - self.first
+        return 0 if any(start <= now < end for start, end in self.presses) else 1
 
     def on(self, pin, *rest):
         if self.who(pin) == "led":
