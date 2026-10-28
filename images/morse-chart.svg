@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 806" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
-<title>Morse code chart: letters, digits, AR and SK</title>
-<desc>A is .-. B is -.... C is -.-.. D is -... E is .. F is ..-.. G is --.. H is ..... I is ... J is .---. K is -.-. L is .-... M is --. N is -.. O is ---. P is .--.. Q is --.-. R is .-.. S is .... T is -. U is ..-. V is ...-. W is .--. X is -..-. Y is -.--. Z is --... 0 is -----. 1 is .----. 2 is ..---. 3 is ...--. 4 is ....-. 5 is ...... 6 is -..... 7 is --.... 8 is ---... 9 is ----.. AR is .-.-.. SK is ...-.-</desc>
+<title>Morse code chart: letters, digits and SK</title>
+<desc>A is .-. B is -.... C is -.-.. D is -... E is .. F is ..-.. G is --.. H is ..... I is ... J is .---. K is -.-. L is .-... M is --. N is -.. O is ---. P is .--.. Q is --.-. R is .-.. S is .... T is -. U is ..-. V is ...-. W is .--. X is -..-. Y is -.--. Z is --... 0 is -----. 1 is .----. 2 is ..---. 3 is ...--. 4 is ....-. 5 is ...... 6 is -..... 7 is --.... 8 is ---... 9 is ----.. SK is ...-.-</desc>
 <rect width="900" height="806" rx="14" fill="#3a2918"/>
 <rect x="14" y="14" width="872" height="778" rx="10" fill="#efe6d2"/>
 <text x="450.0" y="52" text-anchor="middle" font-size="24" font-weight="700" fill="#3a2918">Morse code: a dot is a short press, a dash a long one</text>
@@ -192,17 +192,11 @@
 <rect x="776" y="578" width="30" height="12" rx="6" fill="#3a2918"/>
 <circle cx="820" cy="584" r="6" fill="#3a2918"/>
 <rect x="590" y="614" width="270" height="48" rx="6" fill="#e3d6ba"/>
-<text x="604" y="647" font-size="24" font-weight="700" fill="#7a2019" font-family="ui-monospace, 'JetBrains Mono', monospace">AR</text>
+<text x="604" y="647" font-size="24" font-weight="700" fill="#7a2019" font-family="ui-monospace, 'JetBrains Mono', monospace">SK</text>
 <circle cx="668" cy="638" r="6" fill="#7a2019"/>
-<rect x="682" y="632" width="30" height="12" rx="6" fill="#7a2019"/>
-<circle cx="726" cy="638" r="6" fill="#7a2019"/>
-<rect x="740" y="632" width="30" height="12" rx="6" fill="#7a2019"/>
-<circle cx="784" cy="638" r="6" fill="#7a2019"/>
-<text x="604" y="701" font-size="24" font-weight="700" fill="#7a2019" font-family="ui-monospace, 'JetBrains Mono', monospace">SK</text>
-<circle cx="668" cy="692" r="6" fill="#7a2019"/>
-<circle cx="688" cy="692" r="6" fill="#7a2019"/>
-<circle cx="708" cy="692" r="6" fill="#7a2019"/>
-<rect x="722" y="686" width="30" height="12" rx="6" fill="#7a2019"/>
-<circle cx="766" cy="692" r="6" fill="#7a2019"/>
-<rect x="780" y="686" width="30" height="12" rx="6" fill="#7a2019"/>
+<circle cx="688" cy="638" r="6" fill="#7a2019"/>
+<circle cx="708" cy="638" r="6" fill="#7a2019"/>
+<rect x="722" y="632" width="30" height="12" rx="6" fill="#7a2019"/>
+<circle cx="766" cy="638" r="6" fill="#7a2019"/>
+<rect x="780" y="632" width="30" height="12" rx="6" fill="#7a2019"/>
 </svg>

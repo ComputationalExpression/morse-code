@@ -148,39 +148,22 @@ def call(key, function, *args_after_pins):
     return with_key(key, action)
 
 
-def books():
-    """Return the dictionaries main.py keeps outside its functions, whatever their names."""
-    return [
-        value for name, value in vars(program).items()
-        if not name.startswith("__") and isinstance(value, dict)
-    ]
+# The checks pass these books to your functions, so a function has to use its
+# parameter, not a dictionary of its own.
+CODE = {"S": "...", "O": "---", "A": ".-", "B": "-...", "H": "....", "I": "..", "5": ".....", "SK": "...-.-"}
+LETTERS = {pattern: character for character, pattern in CODE.items()}
 
 
-def test_the_code_book_and_its_reverse():
-    found = books()
-    forward = [book for book in found if book.get("SK") == "...-.-"]
-    assert forward, (
-        'found no dictionary outside the functions that maps "SK" to "...-.-": store the code book in a '
-        "variable outside any function, then assign AR and SK to it"
-    )
-    code = forward[0]
-    assert code.get("AR") == ".-.-.", f'the code book maps "AR" to {code.get("AR")!r}, expected ".-.-."'
-    assert len(code) == 38, f"the code book should hold 38 entries (26 letters, 10 digits, AR and SK) and holds {len(code)}"
-    reverse = [book for book in found if book.get("...-.-") == "SK"]
-    assert reverse, (
-        'found no dictionary outside the functions that maps "...-.-" to "SK": build the backwards book '
-        "after AR and SK are added to the code book"
-    )
-    letters = reverse[0]
-    assert len(letters) == len(code), (
-        f"the backwards book holds {len(letters)} entries, expected {len(code)}: loop over every key of the code book"
-    )
-    for character in ("A", "S", "9", "AR"):
-        pattern = code[character]
-        assert letters.get(pattern) == character, (
-            f'the backwards book maps "{pattern}" to {letters.get(pattern)!r}, expected "{character}": '
-            f"the pattern is the key and the character is the value"
+def test_reverse_book_flips_a_dictionary():
+    for book in ({"Q": "--.-", "E": ".", "T": "-"}, CODE):
+        original = dict(book)
+        got = program.reverse_book(book)
+        want = {pattern: character for character, pattern in original.items()}
+        assert got == want, (
+            f"reverse_book returned {got!r} for {original!r}, expected {want!r}: "
+            f"each pattern becomes a key, and its character the value"
         )
+        assert book == original, "reverse_book changed the dictionary it was given: build a new one and return it"
 
 
 def test_read_code_book_loads_a_csv_file(tmp_path):
@@ -199,15 +182,22 @@ def test_read_code_book_loads_a_csv_file(tmp_path):
 def test_to_morse_looks_up_each_character():
     cases = [("SOS", "... --- ..."), ("sos", "... --- ..."), ("A B", ".- -..."), ("HI5", ".... .. ....."), ("", "")]
     for text, want in cases:
-        got = program.to_morse(text)
-        assert got == want, f"to_morse({text!r}) returned {got!r}, expected {want!r}: one space between patterns, none at the ends, and characters not in the code book skipped"
+        got = program.to_morse(text, CODE)
+        assert got == want, f"to_morse({text!r}, code) returned {got!r}, expected {want!r}: one space between patterns, none at the ends, and characters not in the code book skipped"
+    made_up = {"A": "--", "B": "."}
+    got = program.to_morse("ab", made_up)
+    assert got == "-- .", f"to_morse('ab', {made_up!r}) returned {got!r}, expected '-- .': look each character up in the code parameter"
 
 
 def test_from_morse_looks_up_a_pattern():
-    cases = [(".-", "A"), ("...", "S"), ("...-.-", "SK"), (".-.-.", "AR"), (".......", "?"), ("", "?")]
+    cases = [(".-", "A"), ("...", "S"), ("...-.-", "SK"), ("-.-.", "?"), (".......", "?"), ("", "?")]
     for pattern, want in cases:
-        got = program.from_morse(pattern)
-        assert got == want, f"from_morse({pattern!r}) returned {got!r}, expected {want!r}: ? when the pattern is not a key of the backwards book"
+        got = program.from_morse(pattern, LETTERS)
+        assert got == want, f"from_morse({pattern!r}, letters) returned {got!r}, expected {want!r}: ? when the pattern is not a key of the backwards book"
+    made_up = {"--": "A", ".": "B"}
+    for pattern, want in (("--", "A"), (".-", "?")):
+        got = program.from_morse(pattern, made_up)
+        assert got == want, f"from_morse({pattern!r}, {made_up!r}) returned {got!r}, expected {want!r}: look the pattern up in the letters parameter"
 
 
 def test_press_length_counts_tenths_of_a_second_and_lights_the_led():
@@ -276,7 +266,13 @@ def run_program(capsys, letters, name="JJ"):
     key = Key(keyed(letters))
     mockro.get_recorder().clear()
     with patch("builtins.input", side_effect=lambda prompt="": name):
-        with_key(key, program.main)
+        try:
+            with_key(key, program.main)
+        except AssertionError as error:
+            raise AssertionError(
+                f"{error}. If the message never ended at SK, check that main adds SK to the code book "
+                f"before it calls reverse_book, and keeps reading letters until from_morse returns SK"
+            ) from None
     out, err = capsys.readouterr()
     assert err == "", "the program wrote to the error stream:\n" + err
     return out

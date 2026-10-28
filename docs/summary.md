@@ -4,10 +4,10 @@ Answer each question in full sentences. Each answer starts as a placeholder mark
 every marker with your own writing, and delete the marker itself. The minimum word count for
 this document is `150` words.
 
-> `read_code_book` reads `morse.csv` into the code book, and the backwards book is built by a
-> loop over the code book after the lines that add `AR` and `SK`. Explain what each line of the
-> file becomes in the code book, why each line is stripped, and what `from_morse("...-.-")`
-> would return if that loop ran before those two lines.
+> `read_code_book` reads `morse.csv` into the code book, `main` adds `SK` to it, and then
+> `reverse_book` builds the backwards book. Explain what each line of the file becomes in the
+> code book, why each line is stripped, and what would happen when the operator keys `SK` if
+> `main` called `reverse_book` before adding `SK`.
 
 TODO
 

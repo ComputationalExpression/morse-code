@@ -37,26 +37,27 @@ body:
         Walk through the code with the author, with the program running on their board. **Ask one
         question per concept below, in your own words, about their own code.** Reviews happen at a
         table where other students can hear, so vary the question from student to student: the
-        concept stays the same, the question does not. Pick from these or make up your own.
+        concept stays the same, the question does not. Pick from these or make up your own. The
+        names in the code are the author's own, so ask about their variables, not the ones here.
 
         **Dictionary lookup (the code book and from_morse)**
-        - In `CODE`, what is a key and what is a value? Which would you use to look up the pattern for `K`?
-        - What error would `LETTERS[pattern]` raise for a pattern that is not in the book, and which line stops it?
+        - In the code book, what is a key and what is a value? Which would you use to look up the pattern for `K`?
+        - What error would looking up a pattern that is not in the backwards book raise, and which line stops it?
         - If you key a pattern that is not a letter, what does `from_morse` return, and what does the log show?
 
-        **Building the books (read_code_book and the loop over CODE)**
-        - What does one line of `morse.csv` become in `CODE`, and why is each line stripped before it is split?
-        - What does `character` hold on the first trip/iteration of the loop over `CODE`, and which entry does that trip add to `LETTERS`?
-        - Why does this loop come after the lines that add `AR` and `SK`? What would `LETTERS` be missing otherwise?
-        - How many entries do `CODE` and `LETTERS` hold, and why are the numbers equal?
+        **Building the books (read_code_book, reverse_book and the start of main)**
+        - What does one line of `morse.csv` become in the code book, and why is each line stripped before it is split?
+        - What does the loop variable in `reverse_book` hold on its first trip/iteration, and which entry does that trip add?
+        - Why does `main` add `SK` before it calls `reverse_book`? What would happen when the operator keys SK otherwise?
+        - How many entries do the two books hold, and why are the numbers equal?
 
         **Timing a press (press_length and to_symbol)**
-        - What does `length` count, and how long is one trip/iteration of the loop?
+        - What does the counter in `press_length` count, and how long is one trip/iteration of the loop?
         - A press lasts about half a second. What does `press_length` return, and which symbol is that?
         - Why does the LED go on inside the loop and off after it?
 
         **Ending a letter (read_letter)**
-        - What does `quiet` count, and what is its value when the operator waits a full second?
+        - What does the counter in the inner `while` count, and what is its value when the operator waits a full second?
         - Why does the inner `while` have two conditions joined with `and`?
         - The operator pauses for half a second between two presses. Which lines keep that inside one letter?
 
@@ -66,10 +67,10 @@ body:
       label: Code walkthrough
       description: One box per concept. Check it when the author's answer to your question showed the understanding described.
       options:
-        - label: "Dictionary lookup: the author can explain keys and values in CODE and why from_morse checks with in before the lookup"
-        - label: "Building the books: the author can explain what read_code_book does with each line of morse.csv, what the loop over CODE adds on each trip/iteration, and why it comes after AR and SK are added"
+        - label: "Dictionary lookup: the author can explain keys and values in the code book and why from_morse checks with in before the lookup"
+        - label: "Building the books: the author can explain what read_code_book does with each line of morse.csv, what the loop in reverse_book adds on each trip/iteration, and why main adds SK before calling reverse_book"
         - label: "Timing a press: the author can explain what press_length counts and why a short press is a dot"
-        - label: "Ending a letter: the author can explain what quiet counts and what stops the inner while loop"
+        - label: "Ending a letter: the author can explain what the counter in the inner while loop counts and what stops that loop"
         - label: "The author described their process well, communicating confidence and understanding of their own code"
   - type: textarea
     attributes:

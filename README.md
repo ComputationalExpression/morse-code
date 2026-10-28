@@ -48,7 +48,8 @@ Specifically, by the end of this lab you should be able to:
 * read a CSV file into a dictionary, add an entry by assigning to a new key, and look a value up by its key
 * test whether a key is in a dictionary with `in` before a lookup that could fail
 * build one dictionary from another with a `for` loop over its keys
-* define functions with parameters that return a value, and call them from other functions
+* define functions with parameters that return a value, pass a dictionary to a function, and call
+  functions from other functions
 * write a docstring that says what a function returns
 * time a button press with a `while` loop and a counter
 * update a counter or a string with `+=`, and count down with `range(start, stop, step)`
@@ -80,16 +81,16 @@ parameters, and the operator log at the end keeps its labels.
 
 **The code book.** The file `morse.csv` is provided in the top folder of this repository: a
 header line, then one line for each letter and digit with the character, a comma and its pattern
-of dots and dashes, such as `S,...`. `read_code_book` reads it into a dictionary, which you store
-in a variable outside any function. Each key is a character and each value is its pattern. You
-add two signals that are not letters: `"AR"`, which is `.-.-.`, and `"SK"`, which is `...-.-`.
-Then you build a second dictionary, also outside any function: the same book read backwards,
-where each pattern is a key and its value is the character. A `for` loop over the keys of the
-code book builds it, and it has to come after the two signals are added, so that they are
-flipped as well.
+of dots and dashes, such as `S,...`. At the start of `main`, `read_code_book` reads it into a
+dictionary: each key is a character and each value is its pattern. `main` then adds one signal
+that is not a letter, `"SK"`, which is `...-.-`. A telegraph operator keys SK to sign off at the
+end of a transmission. Then `reverse_book` builds a second dictionary from the code book, the
+same book read backwards, where each pattern is a key and its value is the character. `main`
+adds SK before it calls `reverse_book`, so that SK is flipped as well.
 
-**Looking up.** `to_morse` turns text into patterns. `from_morse` turns a pattern into a
-character, and gives `?` for a pattern that is not in the backwards book.
+**Looking up.** `to_morse` turns text into patterns with the code book. `from_morse` turns a
+pattern into a character with the backwards book, and gives `?` for a pattern that is not in
+it. `main` passes each function the book it needs.
 
 **The key.** `press_length` times one press. `to_symbol` decides whether that press is a dot or
 a dash. `read_letter` keys symbols until a second passes without a press, and returns the
@@ -97,21 +98,21 @@ pattern of one letter.
 
 **The operator.** `main` counts down from 3 with `range(3, 0, -1)`, blinking the sounder once
 a second, so the operator knows when to start. Then it reads letters one at a time until the
-operator keys `SK`, which is the signal for the end of the transmission, and ends with the
-operator log.
+operator keys `SK`, and ends with the operator log.
 
 ### The functions
 
-Write these above `main`, and the code book steps above them. The names and parameters must
-match exactly, because the automated checks call each one directly. `read_code_book` comes with
-its docstring, the line in triple quotes right under `def` that says what the function returns.
-Write one of your own for each of the other five.
+Write these above `main`. The names and parameters must match exactly, because the automated
+checks call each one directly with books of their own. `read_code_book` comes with its
+docstring, the line in triple quotes right under `def` that says what the function returns.
+Write one of your own for each of the other six.
 
 |Function |What it does |
 |:--------|:------------|
 |`read_code_book(filename)` |Returns a dictionary from each character in the CSV file to its pattern. It skips the header line, splits each line at the comma, and strips the newline from the line first, so that a pattern is `".-"` and not `".-\n"` |
-|`to_morse(text)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces, adding each pattern to the result with `+=`. A character that is not in the code book, such as a space, is skipped. `to_morse("sos")` returns `"... --- ..."` |
-|`from_morse(pattern)` |Returns the character for `pattern`, or `"?"` when `pattern` is not a key of the backwards book |
+|`reverse_book(code)` |Returns a new dictionary from each pattern in `code` to its character, built by a `for` loop over the keys of `code` |
+|`to_morse(text, code)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces, adding each pattern to the result with `+=`. A character that is not a key of `code`, such as a space, is skipped. With the code book, `to_morse("sos", code)` returns `"... --- ..."` |
+|`from_morse(pattern, letters)` |Returns the character for `pattern` from `letters`, the backwards book, or `"?"` when `pattern` is not one of its keys |
 |`press_length(button, led)` |Returns how many tenths of a second the button stays down. While `button.value()` is `0`, the LED is on, the function calls `sleep(0.1)`, and a counter goes up by 1. When the button is released the LED goes off |
 |`to_symbol(length)` |Returns `"."` when `length` is less than `3`, and `"-"` otherwise |
 |`read_letter(button, led)` |Waits for the first press. Then it adds a symbol to the pattern for every press, and after each press waits up to ten tenths of a second for the next one. When a full second passes with no press, the letter is over and the function returns its pattern |
@@ -169,8 +170,8 @@ Morse: ... --- ...
 
 ## Getting started
 
-Open `src/main.py` and work through the `TODO` markers in order. The first nine steps are
-functions and dictionaries that do not need the board, so check each one as you finish it:
+Open `src/main.py` and work through the `TODO` markers in order. The first seven steps are
+functions that do not need the board, so check each one as you finish it:
 
 ```text
 uv run gatorgrade --config gatorgrade.yml
@@ -199,7 +200,7 @@ Board**. It stays on the board, so you do this once.
 Press the button briefly for a dot and for a little longer for a dash, and leave a full second
 between letters. Key `...-.-` to end.
 
-![The Morse code chart: each letter and digit with its dots and dashes, then AR and SK](images/morse-chart.svg)
+![The Morse code chart: each letter and digit with its dots and dashes, then SK](images/morse-chart.svg)
 
 ## Evaluation
 
@@ -224,16 +225,16 @@ Each check's description says what to look at when it fails. Under a failed chec
 also prints a `uv run pytest ...` command. Run it: the last lines say what a function returned
 and what was expected. Twelve of the checks are about your code:
 
-* the code book gains `AR` and `SK`, and the backwards book holds one entry for every entry of it
+* `reverse_book` returns the backwards book of a dictionary, leaving the dictionary it was given unchanged
 * `read_code_book` returns a dictionary from the characters of a CSV file to their patterns
-* `to_morse` returns the patterns for a text, skipping characters that are not in the book
-* `from_morse` returns the character for a pattern, and `?` for one that is not in the book
+* `to_morse` returns the patterns for a text from the book it is given, skipping characters that are not in it
+* `from_morse` returns the character for a pattern from the book it is given, and `?` for one that is not in it
 * `press_length` returns the length of a press in tenths of a second, with the LED on during it
 * `to_symbol` returns a dot or a dash
 * `read_letter` returns the pattern of one letter, ends it after a second without a press, and keeps a pause shorter than a second inside the letter
 * keying a message and then `SK` logs the decoded message, its length and its patterns
-* `read_code_book` uses `with open` and a loop over the lines, and the backwards book is built by a loop over the code book
-* each of the six functions has a docstring of its own
+* `read_code_book` uses `with open` and a loop over the lines, `reverse_book` uses a loop over the keys, and `main` adds `SK` before it calls `reverse_book`
+* each of the seven functions has a docstring of its own
 * `to_morse` checks each character with `in` and builds its result with `+=`
 * `press_length`, `read_letter` and `main` have `while` loops, `main` counts down with `range(3, 0, -1)`, and `main` calls the functions
 * no `TODO` markers remain, and there are at least six comments
@@ -274,8 +275,8 @@ and about your own code, so the questions differ from student to student. Be rea
 * **Dictionary lookup**: explain what a key and a value are in your code book, and why
   `from_morse` checks with `in` before it looks a pattern up
 * **Building the books**: explain what `read_code_book` does with each line of `morse.csv`, what
-  the loop over the code book does on each trip/iteration, and why it comes after `AR` and `SK`
-  are added
+  the loop in `reverse_book` does on each trip/iteration, and why `main` adds `SK` before it
+  calls `reverse_book`
 * **Timing a press**: explain what `press_length` counts, and why a press under three tenths of
   a second is a dot
 * **Ending a letter**: explain what the counter in `read_letter`'s inner `while` loop counts,

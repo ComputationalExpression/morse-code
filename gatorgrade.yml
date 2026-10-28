@@ -5,22 +5,22 @@
 # button is pressed by a pretend operator with a script of presses, and time passes only when
 # your program calls sleep, so a loop that watches the button without sleeping is stopped.
 
-- description: "[CODE BOOK] The code book is read from morse.csv into a variable outside the functions and gains the AR and SK signals by assignment, and the backwards book holds one entry for every entry of it: build the backwards book after the two signals are added"
+- description: "[CODE BOOK] reverse_book(code) returns a new dictionary from each pattern in code to its character, and leaves code unchanged"
   check: ExecuteCommand
   options:
-    command: uv run pytest tests/test_morse.py::test_the_code_book_and_its_reverse
+    command: uv run pytest tests/test_morse.py::test_reverse_book_flips_a_dictionary
 
 - description: "[CODE BOOK] read_code_book(filename) returns a dictionary from each character to its pattern: skip the header line, split each line at the comma, and strip the newline"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_read_code_book_loads_a_csv_file
 
-- description: "[TO MORSE] to_morse(text) returns the patterns joined by single spaces, in upper or lower case, skipping any character that is not in the code book: to_morse of sos is ... --- ..."
+- description: "[TO MORSE] to_morse(text, code) returns the patterns from code joined by single spaces, in upper or lower case, skipping any character that is not a key of code: with the code book, sos is ... --- ..."
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_to_morse_looks_up_each_character
 
-- description: "[FROM MORSE] from_morse(pattern) returns the character for a pattern and ? for a pattern that is not a key of the backwards book: check with in before the lookup"
+- description: "[FROM MORSE] from_morse(pattern, letters) returns the character for a pattern from letters and ? for a pattern that is not one of its keys: check with in before the lookup"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_from_morse_looks_up_a_pattern
@@ -40,17 +40,17 @@
   options:
     command: uv run pytest tests/test_morse.py::test_read_letter_returns_one_pattern_after_a_pause
 
-- description: "[OPERATOR] Keying S O S then SK logs Message SOS, Letters 3 and Morse ... --- ..., and a pattern the book lacks becomes a ? in the message: main keeps reading letters until SK"
+- description: "[OPERATOR] Keying S O S then SK logs Message SOS, Letters 3 and Morse ... --- ..., and a pattern the book lacks becomes a ? in the message: main adds SK to the code book before it calls reverse_book, and keeps reading letters until SK"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_the_program_decodes_a_message_until_sk
 
-- description: "[CODE] read_code_book uses with open, a for loop over the lines and split, and the backwards book is built by a for loop over the code book that assigns each character under its pattern"
+- description: "[CODE] read_code_book uses with open, a for loop over the lines and split, reverse_book uses a for loop that assigns each character under its pattern, and main adds SK before it calls reverse_book"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_structure.py::test_the_books_are_built_in_loops
 
-- description: "[CODE] Each of the six functions has a docstring of its own, a line in triple quotes right under def that says what the function returns"
+- description: "[CODE] Each of the seven functions has a docstring of its own, a line in triple quotes right under def that says what the function returns"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_structure.py::test_every_function_has_its_own_docstring
@@ -60,7 +60,7 @@
   options:
     command: uv run pytest tests/test_structure.py::test_to_morse_loops_over_the_text_and_checks_the_book
 
-- description: "[CODE] press_length, read_letter and main each have a while loop, main counts down with a for loop over range(3, 0, -1) before the first letter, and main calls read_letter, from_morse and to_morse"
+- description: "[CODE] press_length, read_letter and main each have a while loop, main counts down with a for loop over range(3, 0, -1) before the first letter, and main calls read_code_book, read_letter, from_morse and to_morse"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_structure.py::test_the_key_is_read_in_while_loops_and_main_counts_down_and_uses_the_functions
@@ -72,7 +72,7 @@
       fragment: TODO
       count: 0
       exact: true
-  - description: "[CODE] At least six comments: explain why the backwards book is built after the signals are added, or what the counter in read_letter counts"
+  - description: "[CODE] At least six comments: explain why SK is added before reverse_book is called, or what the counter in read_letter counts"
     check: CountSingleLineComments
     options:
       language: Python
