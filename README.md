@@ -105,17 +105,20 @@ operator keys `SK`, and ends with the operator log.
 Write these above `main`. The names and parameters must match exactly, because the automated
 checks call each one directly with books of their own. `read_code_book` comes with its
 docstring, the line in triple quotes right under `def` that says what the function returns.
-Write one of your own for each of the other six.
+Write one of your own for each of the other six. Docstrings are on [Week 10 Session 1, slide 6](https://computationalexpression.com/slides/week-10-session-1/#6).
 
-|Function |What it does |
-|:--------|:------------|
-|`read_code_book(filename)` |Returns a dictionary from each character in the CSV file to its pattern. It skips the header line, splits each line at the comma, and strips the newline from the line first, so that a pattern is `".-"` and not `".-\n"` |
-|`reverse_book(code)` |Returns a new dictionary from each pattern in `code` to its character, built by a `for` loop over the keys of `code` |
-|`to_morse(text, code)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces, adding each pattern to the result with `+=`. A character that is not a key of `code`, such as a space, is skipped. With the code book, `to_morse("sos", code)` returns `"... --- ..."` |
-|`from_morse(pattern, letters)` |Returns the character for `pattern` from `letters`, the backwards book, or `"?"` when `pattern` is not one of its keys |
-|`press_length(button, led)` |Returns how many tenths of a second the button stays down. While `button.value()` is `0`, the LED is on, the function calls `sleep(0.1)`, and a counter goes up by 1. When the button is released the LED goes off |
-|`to_symbol(length)` |Returns `"."` when `length` is less than `3`, and `"-"` otherwise |
-|`read_letter(button, led)` |Waits for the first press. Then it adds a symbol to the pattern for every press, and after each press waits up to ten tenths of a second for the next one. When a full second passes with no press, the letter is over and the function returns its pattern |
+|Function |What it does |Similar code in the slides |
+|:--------|:------------|:---------------------------|
+|`read_code_book(filename)` |Returns a dictionary from each character in the CSV file to its pattern. It skips the header line, splits each line at the comma, and strips the newline from the line first, so that a pattern is `".-"` and not `".-\n"` | [Week 10 Session 3, slides 2–3](https://computationalexpression.com/slides/week-10-session-3/#2)<br>[Week 9 Session 2, slides 14–15](https://computationalexpression.com/slides/week-09-session-2/#14) |
+|`reverse_book(code)` |Returns a new dictionary from each pattern in `code` to its character, built by a `for` loop over the keys of `code` | [Week 10 Session 3, slides 8–9](https://computationalexpression.com/slides/week-10-session-3/#8)<br>[Week 10 Session 2, slide 9](https://computationalexpression.com/slides/week-10-session-2/#9) |
+|`to_morse(text, code)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces, adding each pattern to the result with `+=`. A character that is not a key of `code`, such as a space, is skipped. With the code book, `to_morse("sos", code)` returns `"... --- ..."` | [Week 10 Session 3, slides 4–7](https://computationalexpression.com/slides/week-10-session-3/#4)<br>[Week 10 Session 2, slides 7–8](https://computationalexpression.com/slides/week-10-session-2/#7) |
+|`from_morse(pattern, letters)` |Returns the character for `pattern` from `letters`, the backwards book, or `"?"` when `pattern` is not one of its keys | [Week 10 Session 3, slide 10](https://computationalexpression.com/slides/week-10-session-3/#10)<br>[Week 10 Session 2, slides 7–8](https://computationalexpression.com/slides/week-10-session-2/#7) |
+|`press_length(button, led)` |Returns how many tenths of a second the button stays down. While `button.value()` is `0`, the LED is on, the function calls `sleep(0.1)`, and a counter goes up by 1. When the button is released the LED goes off | [Week 10 Session 3, slide 15](https://computationalexpression.com/slides/week-10-session-3/#15)<br>[Week 8 Session 3, slides 6–7](https://computationalexpression.com/slides/week-08-session-3/#6) |
+|`to_symbol(length)` |Returns `"."` when `length` is less than `3`, and `"-"` otherwise | [Week 9 Session 2, slides 8–9](https://computationalexpression.com/slides/week-09-session-2/#8) |
+|`read_letter(button, led)` |Waits for the first press. Then it adds a symbol to the pattern for every press, and after each press waits up to ten tenths of a second for the next one. When a full second passes with no press, the letter is over and the function returns its pattern | [Week 10 Session 3, slides 11–12](https://computationalexpression.com/slides/week-10-session-3/#11)<br>[Week 10 Session 1, slides 2–3](https://computationalexpression.com/slides/week-10-session-1/#2) |
+
+For `main`: adding an entry to a dictionary is on [Week 10 Session 2, slide 5](https://computationalexpression.com/slides/week-10-session-2/#5), passing values to a
+function is on [Week 9 Session 2, slides 6–7](https://computationalexpression.com/slides/week-09-session-2/#6), and counting down with a step is on [Week 10 Session 3, slides 13–14](https://computationalexpression.com/slides/week-10-session-3/#13).
 
 A press that ends before 0.3 seconds is a dot. `PULL_UP` makes a press read `0` and a released
 button read `1`. Each of the loops that watch the button has to call `sleep`, or time never
