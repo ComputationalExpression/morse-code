@@ -9,8 +9,10 @@ letter. A dictionary is the code book that turns a pattern into a letter, and
 the same book turns a message into patterns. The book is read from the file
 morse.csv.
 
-Every message this program prints is yours to word. The automated checks read
-only the operator log at the end, and call your functions directly.
+Every message this program prints is yours to word, and every variable name
+is yours to choose. The function names and their parameters stay as the README
+lists them, because the automated checks call each function directly. The
+checks also read the operator log at the end.
 
 Author: TODO
 """
@@ -18,58 +20,78 @@ Author: TODO
 from machine import Pin
 from time import sleep
 
-# TODO 1: write a function `read_code_book(filename)` that returns a
-# dictionary from each character in the CSV file to its pattern. Set `book` to
-# an empty dictionary. Open the file with `with open(filename) as file`, call
-# file.readline() once to skip the header line, and loop over the lines of the
-# file. For each line, save line.strip().split(",") to `parts` (strip removes
-# the newline at the end of the line), then assign parts[1] to `book` under the
-# key parts[0]. Return `book` after the with block
+# read_code_book is started for you with its docstring: the line in triple
+# quotes right under def, which says what the function returns. Write a
+# docstring like it for every function you add.
 
-# TODO 2: set `CODE` to the dictionary that read_code_book returns for
-# "morse.csv". Each key is a character and each value is its pattern of dots
-# and dashes, such as "S": "..."
 
-# TODO 3: add two signals to the book by assigning to new keys: "AR" is
-# ".-.-." and "SK" is "...-.-". Assigning to a key that is not in a dictionary
-# adds an entry
+def read_code_book(filename):
+    """Return a dictionary from each character in the CSV file to its pattern."""
+    # TODO 1: build the dictionary from the file, one entry per line:
+    #   - start with an empty dictionary (`book`, for example)
+    #   - open the file with `with open(filename) as file`, and call
+    #     file.readline() once to skip the header line
+    #   - loop over the lines of the file. line.strip() removes the newline at
+    #     the end of a line, and .split(",") breaks what is left into a list:
+    #     the character at position 0 and its pattern at position 1
+    #   - assign the pattern to the dictionary, with the character as the key
+    #   - return the dictionary after the with block
 
-# TODO 4: build the book backwards. Set `LETTERS` to an empty dictionary, then
-# write a for loop over `CODE`. On every trip/iteration, with `character`
-# holding the key, assign `character` to `LETTERS` under the pattern
-# CODE[character] as the key. Place this after TODO 3, so that AR and SK are
-# flipped too
+
+# TODO 2: below the function and outside it, store the dictionary that
+# read_code_book returns for "morse.csv" in a variable (`CODE`, for example).
+# Each key is a character and each value is its pattern, such as "S": "..."
+
+# TODO 3: add two signals to the code book by assigning to new keys: "AR" is
+# ".-.-." and "SK" is "...-.-"
+
+# TODO 4: build the code book backwards, so that each pattern is a key and its
+# value is the character:
+#   - start a second empty dictionary (`LETTERS`, for example)
+#   - write a for loop over the code book. On every trip/iteration the loop
+#     variable holds one key, a character
+#   - look up that character's pattern in the code book, and assign the
+#     character to the second dictionary with the pattern as the key
+#   - keep this below TODO 3, so that AR and SK are flipped too
 
 # TODO 5: write a function `to_morse(text)` that returns the patterns for the
-# characters of text, separated by single spaces. Start `result` as an empty
-# string and loop over text.upper(). Add a character's pattern to `result` with
-# +=, only if the character is in CODE, and with a space before it unless
-# `result` is still empty, so a space or a ? is skipped. to_morse("sos") returns "... --- ..."
+# characters of text, separated by single spaces:
+#   - start the result as an empty string
+#   - loop over text.upper(), one character on each trip/iteration
+#   - use `in` to check whether the character is a key of the code book, and
+#     skip it if it is not (a space, for example)
+#   - add its pattern to the result with +=, with a space before it unless the
+#     result is still empty
+# to_morse("sos") returns "... --- ..."
 
 # TODO 6: write a function `from_morse(pattern)` that returns the character
-# for a pattern from LETTERS, or "?" when the pattern is not a key of LETTERS.
-# Check with `in` before the lookup
+# for a pattern from the backwards book, or "?" when the pattern is not one of
+# its keys. Check with `in` before the lookup
 
 # TODO 7: write a function `press_length(button, led)` that returns how many
-# tenths of a second the button stays down. Set `length` to 0, and while
-# button.value() is 0: led.on(), sleep(0.1), and add 1 to `length`. When the
-# loop ends, led.off() and return `length`. PULL_UP makes a press read 0
+# tenths of a second the button stays down. Count the trips/iterations of a
+# while loop that runs while the button is pressed and sleeps 0.1 seconds on
+# each one. The LED is on during the press and off after it. PULL_UP makes a
+# press read 0
 
 # TODO 8: write a function `to_symbol(length)` that returns "." when length is
 # less than 3 and "-" otherwise
 
 # TODO 9: write a function `read_letter(button, led)` that returns the pattern
 # of one letter:
-#   - set `pattern` to an empty string
-#   - while button.value() is 1: sleep(0.01), so nothing happens until the
-#     first press
-#   - set `finished` to False, then repeat while not `finished`:
-#       - add to_symbol(press_length(button, led)) to `pattern`
-#       - set `quiet` to 0, then while button.value() is 1 and `quiet` is less
-#         than 10: sleep(0.1) and add 1 to `quiet`
-#       - if `quiet` equals 10, nothing was pressed for a second, so set
-#         `finished` to True
-#   - return `pattern`
+#   - start the pattern as an empty string, and wait until the button is first
+#     pressed, sleeping 0.01 seconds on each trip/iteration of the wait
+#   - repeat until the letter is finished (a True or False variable can
+#     remember that):
+#       - add the symbol for the next press to the pattern, using
+#         press_length and to_symbol
+#       - count the quiet tenths of a second after the press: start a counter
+#         at 0, and while the button reads 1 and the counter is less than 10,
+#         sleep(0.1) and add 1 to the counter. A press or a full second stops
+#         this loop
+#       - if the counter reached 10, nothing was pressed for a second, so the
+#         letter is finished
+#   - return the pattern
 
 
 def main():
@@ -80,25 +102,21 @@ def main():
     print("MORSE CODE")
     print("=" * 50)
 
-    # TODO 10: ask the user's name, save it to a variable called `name`, and
-    # print a line asking the operator to key a message ending with SK
+    # TODO 10: ask the operator's name, and tell them to key a message that
+    # ends with SK
 
     # TODO 11: count down before the first letter with a for loop over
     # range(3, 0, -1). On every trip/iteration, print the count, then turn the
-    # LED on, sleep(0.5), turn it off and sleep(0.5). After the loop, print a
-    # line telling the operator to start keying
+    # LED on, sleep(0.5), turn it off and sleep(0.5). After the loop, tell the
+    # operator to start keying
 
-    # TODO 12: set `message` to an empty string and `letter` to an empty
-    # string. While `letter` is not "SK": save read_letter(button, led) to
-    # `pattern`, save from_morse(pattern) to `letter`, print the pattern and the
-    # letter, and if `letter` is not "SK", add it to `message` with +=
+    # TODO 12: read letters with read_letter and decode each one with
+    # from_morse until the letter is SK. Print each pattern with its letter,
+    # and add every letter except SK to the message with +=
 
-    # TODO 13: print a blank line, a line of 50 "=", "OPERATOR LOG:" followed by
-    # the name, and another line of 50 "=". Then print these lines, each a
-    # label followed by its value:
-    # Message: `message`
-    # Letters: how many characters `message` holds
-    # Morse: to_morse(message)
+    # TODO 13: print the operator log shown in the README: the OPERATOR LOG
+    # line with the name between two lines of "=", then the Message, Letters
+    # and Morse lines. Morse is to_morse of the message
 
 
 if __name__ == "__main__":

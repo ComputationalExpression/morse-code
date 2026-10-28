@@ -148,21 +148,37 @@ def call(key, function, *args_after_pins):
     return with_key(key, action)
 
 
+def books():
+    """Return the dictionaries main.py keeps outside its functions, whatever their names."""
+    return [
+        value for name, value in vars(program).items()
+        if not name.startswith("__") and isinstance(value, dict)
+    ]
+
+
 def test_the_code_book_and_its_reverse():
-    code = program.CODE
-    assert code["AR"] == ".-.-.", f'CODE["AR"] should be ".-.-." and is {code.get("AR")!r}: assign it to the book'
-    assert code["SK"] == "...-.-", f'CODE["SK"] should be "...-.-" and is {code.get("SK")!r}: assign it to the book'
-    assert len(code) == 38, f"CODE should hold 38 entries (26 letters, 10 digits, AR and SK) and holds {len(code)}"
-    letters = program.LETTERS
-    assert isinstance(letters, dict), "LETTERS should be a dictionary"
-    assert len(letters) == len(code), (
-        f"LETTERS holds {len(letters)} entries, expected {len(code)}: loop over every key of CODE, "
-        f"after AR and SK were added"
+    found = books()
+    forward = [book for book in found if book.get("SK") == "...-.-"]
+    assert forward, (
+        'found no dictionary outside the functions that maps "SK" to "...-.-": store the code book in a '
+        "variable outside any function, then assign AR and SK to it"
     )
-    for character in ("A", "S", "9", "SK"):
+    code = forward[0]
+    assert code.get("AR") == ".-.-.", f'the code book maps "AR" to {code.get("AR")!r}, expected ".-.-."'
+    assert len(code) == 38, f"the code book should hold 38 entries (26 letters, 10 digits, AR and SK) and holds {len(code)}"
+    reverse = [book for book in found if book.get("...-.-") == "SK"]
+    assert reverse, (
+        'found no dictionary outside the functions that maps "...-.-" to "SK": build the backwards book '
+        "after AR and SK are added to the code book"
+    )
+    letters = reverse[0]
+    assert len(letters) == len(code), (
+        f"the backwards book holds {len(letters)} entries, expected {len(code)}: loop over every key of the code book"
+    )
+    for character in ("A", "S", "9", "AR"):
         pattern = code[character]
         assert letters.get(pattern) == character, (
-            f'LETTERS\\["{pattern}"] should be "{character}" and is {letters.get(pattern)!r}: '
+            f'the backwards book maps "{pattern}" to {letters.get(pattern)!r}, expected "{character}": '
             f"the pattern is the key and the character is the value"
         )
 
@@ -184,14 +200,14 @@ def test_to_morse_looks_up_each_character():
     cases = [("SOS", "... --- ..."), ("sos", "... --- ..."), ("A B", ".- -..."), ("HI5", ".... .. ....."), ("", "")]
     for text, want in cases:
         got = program.to_morse(text)
-        assert got == want, f"to_morse({text!r}) returned {got!r}, expected {want!r}: one space between patterns, none at the ends, and characters not in CODE skipped"
+        assert got == want, f"to_morse({text!r}) returned {got!r}, expected {want!r}: one space between patterns, none at the ends, and characters not in the code book skipped"
 
 
 def test_from_morse_looks_up_a_pattern():
     cases = [(".-", "A"), ("...", "S"), ("...-.-", "SK"), (".-.-.", "AR"), (".......", "?"), ("", "?")]
     for pattern, want in cases:
         got = program.from_morse(pattern)
-        assert got == want, f"from_morse({pattern!r}) returned {got!r}, expected {want!r}: ? when the pattern is not a key of LETTERS"
+        assert got == want, f"from_morse({pattern!r}) returned {got!r}, expected {want!r}: ? when the pattern is not a key of the backwards book"
 
 
 def test_press_length_counts_tenths_of_a_second_and_lights_the_led():

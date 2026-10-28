@@ -44,17 +44,34 @@ def test_the_books_are_built_in_loops():
     ]
     assert splits, "found no .split(...) in read_code_book: split each line at the comma"
     stores = [n for n in inside(book, ast.Subscript) if isinstance(n.ctx, ast.Store)]
-    assert stores, "found no `book[...] = ...` in read_code_book: each line adds one entry"
-    loops = [
-        loop for loop in inside(tree(), ast.For)
-        if isinstance(loop.iter, ast.Name) and loop.iter.id == "CODE"
-    ]
-    assert loops, "found no `for ... in CODE:` loop: one pass over the keys builds the reverse book"
+    assert stores, "found no assignment to a key in read_code_book: each line adds one entry to the dictionary"
+    loops = []
+    for node in tree().body:
+        if isinstance(node, ast.FunctionDef) and node.name == "read_code_book":
+            continue
+        loops += inside(node, ast.For)
     stores = [
-        n for loop in loops for n in inside(loop, ast.Subscript)
-        if isinstance(n.ctx, ast.Store) and isinstance(n.value, ast.Name) and n.value.id == "LETTERS"
+        n for loop in loops for n in inside(loop, ast.Subscript) if isinstance(n.ctx, ast.Store)
     ]
-    assert stores, "found no `LETTERS[...] = ...` inside the loop: assign each pattern as a key, with its character as the value"
+    assert stores, (
+        "found no for loop outside read_code_book that assigns to a key: one pass over the keys of the code "
+        "book builds the backwards book, with each pattern as a key and its character as the value"
+    )
+
+
+FUNCTIONS = ("read_code_book", "to_morse", "from_morse", "press_length", "to_symbol", "read_letter")
+
+
+def test_every_function_has_its_own_docstring():
+    nodes = [function(name) for name in FUNCTIONS]
+    missing = [node.name for node in nodes if not ast.get_docstring(node)]
+    assert not missing, (
+        f"found no docstring in {', '.join(missing)}: put a line in triple quotes right under each def "
+        f"that says what the function returns, like the one in read_code_book"
+    )
+    docstrings = [ast.get_docstring(node).strip() for node in nodes]
+    copied = [node.name for node, text in zip(nodes, docstrings) if docstrings.count(text) > 1]
+    assert not copied, f"{', '.join(copied)} share the same docstring: each one says what its own function returns"
 
 
 def test_to_morse_loops_over_the_text_and_checks_the_book():

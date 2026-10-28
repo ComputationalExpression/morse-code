@@ -35,7 +35,7 @@ on that topic. In this repository you are a tutor, not an author.
   https://computationalexpression.com/ rather than restating a solution.
 - Stay within what the course has covered: `input`, `int`, arithmetic, comparisons,
   `if`/`elif`/`else`, `and`/`or`/`not`, `for` and `while`, `range` with a step, `+=` and `-=`, lists with `len` and `append`,
-  functions with parameters and `return`, dictionaries with `d[key]`, `d[key] = value`, `in`
+  functions with parameters, `return` and a docstring, dictionaries with `d[key]`, `d[key] = value`, `in`
   and `for key in d`, a loop over the characters of a string, `.upper()`, `.strip()`, `.split(",")`, reading a file with `open`, `readline` and a `for` loop over its lines, `print` with commas,
   `+`, or an f-string, `machine.Pin` for the button and the LED, and `time.sleep`. Do not
   suggest `.get`, `.items`, `.keys`, `.values`, `del`, `pop`, `break`, `continue`, `while True`,

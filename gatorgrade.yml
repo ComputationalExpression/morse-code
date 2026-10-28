@@ -1,11 +1,11 @@
-# Fifteen checks: eight run or call your code, three read src/main.py as Python, two read its
+# Sixteen checks: eight run or call your code, four read src/main.py as Python, two read its
 # text, and two read docs/summary.md. The checks call your functions directly with arguments of
 # their own and compare what they return, and the program check reads only the operator log at
 # the end of a run, never the story lines. Log values forgive extra spaces and letter case. The
 # button is pressed by a pretend operator with a script of presses, and time passes only when
 # your program calls sleep, so a loop that watches the button without sleeping is stopped.
 
-- description: "[CODE BOOK] CODE is read from morse.csv, gains the AR and SK signals by assignment, and LETTERS holds one entry for every entry of CODE: build LETTERS after the two signals are added"
+- description: "[CODE BOOK] The code book is read from morse.csv into a variable outside the functions and gains the AR and SK signals by assignment, and the backwards book holds one entry for every entry of it: build the backwards book after the two signals are added"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_the_code_book_and_its_reverse
@@ -15,12 +15,12 @@
   options:
     command: uv run pytest tests/test_morse.py::test_read_code_book_loads_a_csv_file
 
-- description: "[TO MORSE] to_morse(text) returns the patterns joined by single spaces, in upper or lower case, skipping any character that is not in CODE: to_morse of sos is ... --- ..."
+- description: "[TO MORSE] to_morse(text) returns the patterns joined by single spaces, in upper or lower case, skipping any character that is not in the code book: to_morse of sos is ... --- ..."
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_to_morse_looks_up_each_character
 
-- description: "[FROM MORSE] from_morse(pattern) returns the character for a pattern and ? for a pattern that is not a key of LETTERS: check with in before the lookup"
+- description: "[FROM MORSE] from_morse(pattern) returns the character for a pattern and ? for a pattern that is not a key of the backwards book: check with in before the lookup"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_from_morse_looks_up_a_pattern
@@ -45,10 +45,15 @@
   options:
     command: uv run pytest tests/test_morse.py::test_the_program_decodes_a_message_until_sk
 
-- description: "[CODE] read_code_book uses with open, a for loop over the lines and split, and LETTERS is built by a for loop over CODE that assigns LETTERS\\[CODE\\[character]] = character, or the same with your own names"
+- description: "[CODE] read_code_book uses with open, a for loop over the lines and split, and the backwards book is built by a for loop over the code book that assigns each character under its pattern"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_structure.py::test_the_books_are_built_in_loops
+
+- description: "[CODE] Each of the six functions has a docstring of its own, a line in triple quotes right under def that says what the function returns"
+  check: ExecuteCommand
+  options:
+    command: uv run pytest tests/test_structure.py::test_every_function_has_its_own_docstring
 
 - description: "[CODE] to_morse loops over the text, checks each character with in before the lookup, and adds each pattern to the result with +="
   check: ExecuteCommand
@@ -67,7 +72,7 @@
       fragment: TODO
       count: 0
       exact: true
-  - description: "[CODE] At least six comments: explain why LETTERS is built after the signals are added, or what quiet counts"
+  - description: "[CODE] At least six comments: explain why the backwards book is built after the signals are added, or what the counter in read_letter counts"
     check: CountSingleLineComments
     options:
       language: Python
