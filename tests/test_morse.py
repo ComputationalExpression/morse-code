@@ -114,7 +114,7 @@ def keyed(letters, start=0.0, between=1.5):
 
 
 def pins():
-    return Pin(16, Pin.IN, Pin.PULL_UP), Pin("LED", Pin.OUT)
+    return Pin(16, Pin.IN, Pin.PULL_UP), Pin(15, Pin.OUT)
 
 
 def with_key(key, action):

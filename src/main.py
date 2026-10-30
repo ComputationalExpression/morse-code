@@ -3,7 +3,7 @@
 CMPSC 100: Computational Expression, Lab 6
 
 You are a telegraph operator. Your push button is the telegraph key and the
-built-in LED is the sounder. Short presses are dots and long presses are
+light on GP15 is the sounder. Short presses are dots and long presses are
 dashes; a letter is a pattern of them, and a pause of one second ends the
 letter. A dictionary is the code book that turns a pattern into a letter, and
 the same book turns a message into patterns. The book is read from the file
@@ -89,7 +89,7 @@ def read_code_book(filename):
 
 def main():
     button = Pin(16, Pin.IN, Pin.PULL_UP)
-    led = Pin("LED", Pin.OUT)
+    led = Pin(15, Pin.OUT)
 
     # TODO 8: build the two books:
     #   - store the dictionary that read_code_book returns for "morse.csv" in a

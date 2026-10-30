@@ -11,7 +11,7 @@ carried only two signals, current on and current off, so Morse and his partner A
 invented a code that spells every letter with short and long signals, called dots and dashes.
 An operator pressed a key to send them and listened to a sounder on the other end.
 
-In this lab, your push button is the telegraph key and the built-in LED is the sounder. You
+In this lab, your push button is the telegraph key and the light on GP15 is the sounder. You
 read a code book from a file into a dictionary, and use it in both directions: to turn a
 message into dots and dashes, and to turn the dots and dashes you key back into letters. A short press is
 a dot, a long press is a dash, and a pause of one second ends a letter.
@@ -56,13 +56,13 @@ Specifically, by the end of this lab you should be able to:
 
 ## The circuit
 
-You need the button from Lab 5, on GP16, wired the same way. This lab does not use the three
-lights; the sounder is the LED built into the Pico, `Pin("LED", Pin.OUT)`. Unplug the USB cable
+You need the Lab 5 circuit, wired the same way. The button on GP16 is the key, and the light on
+GP15, `Pin(15, Pin.OUT)`, is the sounder. Unplug the USB cable
 before you touch the wiring.
 
 ![The Pico 2 W pinout, with each pin's GP number](images/pico-2-pinout.svg)
 
-The button in the Lab 5 circuit:
+The Lab 5 circuit:
 
 ![Three LEDs on GP15, GP14 and GP13, and a push button on GP16, on a half breadboard](images/simon-circuit.svg)
 
@@ -113,7 +113,7 @@ Write one of your own for each of the other six. Docstrings are on [Week 10 Sess
 |`reverse_book(code)` |Returns a new dictionary from each pattern in `code` to its character, built by a `for` loop over the keys of `code` | [Week 10 Session 3, slides 8–9](https://computationalexpression.com/slides/week-10-session-3/#8)<br>[Week 10 Session 2, slide 9](https://computationalexpression.com/slides/week-10-session-2/#9) |
 |`to_morse(text, code)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces, adding each pattern to the result with `+=`. A character that is not a key of `code`, such as a space, is skipped. With the code book, `to_morse("sos", code)` returns `"... --- ..."` | [Week 10 Session 3, slides 4–7](https://computationalexpression.com/slides/week-10-session-3/#4)<br>[Week 10 Session 2, slides 7–8](https://computationalexpression.com/slides/week-10-session-2/#7) |
 |`from_morse(pattern, letters)` |Returns the character for `pattern` from `letters`, the backwards book, or `"?"` when `pattern` is not one of its keys | [Week 10 Session 3, slide 10](https://computationalexpression.com/slides/week-10-session-3/#10)<br>[Week 10 Session 2, slides 7–8](https://computationalexpression.com/slides/week-10-session-2/#7) |
-|`press_length(button, led)` |Returns how many tenths of a second the button stays down. While `button.value()` is `0`, the LED is on, the function calls `sleep(0.1)`, and a counter goes up by 1. When the button is released the LED goes off | [Week 10 Session 3, slide 15](https://computationalexpression.com/slides/week-10-session-3/#15)<br>[Week 8 Session 3, slides 6–7](https://computationalexpression.com/slides/week-08-session-3/#6) |
+|`press_length(button, led)` |Returns how many tenths of a second the button stays down. While `button.value()` is `0`, the LED is on, the function calls `sleep(0.1)`, and a counter goes up by 1. When the button is released the LED goes off | [Week 8 Session 3, slides 6–7](https://computationalexpression.com/slides/week-08-session-3/#6) |
 |`to_symbol(length)` |Returns `"."` when `length` is less than `3`, and `"-"` otherwise | [Week 9 Session 2, slides 8–9](https://computationalexpression.com/slides/week-09-session-2/#8) |
 |`read_letter(button, led)` |Waits for the first press. Then it adds a symbol to the pattern for every press, and after each press waits up to ten tenths of a second for the next one. When a full second passes with no press, the letter is over and the function returns its pattern | [Week 10 Session 3, slides 11–12](https://computationalexpression.com/slides/week-10-session-3/#11)<br>[Week 10 Session 1, slides 2–3](https://computationalexpression.com/slides/week-10-session-1/#2) |
 
