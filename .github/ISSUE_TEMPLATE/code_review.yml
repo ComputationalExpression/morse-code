@@ -40,16 +40,15 @@ body:
         concept stays the same, the question does not. Pick from these or make up your own. The
         names in the code are the author's own, so ask about their variables, not the ones here.
 
-        **Dictionary lookup (the code book and from_morse)**
+        **Dictionary lookup (the code book, to_morse and from_morse)**
         - In the code book, what is a key and what is a value? Which would you use to look up the pattern for `K`?
-        - What error would looking up a pattern that is not in the backwards book raise, and which line stops it?
+        - Why can `from_morse` not look a pattern up with square brackets? How does its loop find the character instead?
         - If you key a pattern that is not a letter, what does `from_morse` return, and what does the log show?
 
-        **Building the books (read_code_book, reverse_book and the start of main)**
+        **Building the code book (read_code_book and the start of main)**
         - What does one line of `morse.csv` become in the code book, and why is each line stripped before it is split?
-        - What does the loop variable in `reverse_book` hold on its first trip/iteration, and which entry does that trip add?
-        - Why does `main` add `SK` before it calls `reverse_book`? What would happen when the operator keys SK otherwise?
-        - How many entries do the two books hold, and why are the numbers equal?
+        - Why does `main` add `SK` to the code book? What would happen when the operator keys SK otherwise?
+        - How many entries does the code book hold after `main` adds `SK`, and where does each one come from?
 
         **Timing a press (press_length and to_symbol)**
         - What does the counter in `press_length` count, and how long is one trip/iteration of the loop?
@@ -67,8 +66,8 @@ body:
       label: Code walkthrough
       description: One box per concept. Check it when the author's answer to your question showed the understanding described.
       options:
-        - label: "Dictionary lookup: the author can explain keys and values in the code book and why from_morse checks with in before the lookup"
-        - label: "Building the books: the author can explain what read_code_book does with each line of morse.csv, what the loop in reverse_book adds on each trip/iteration, and why main adds SK before calling reverse_book"
+        - label: "Dictionary lookup: the author can explain keys and values in the code book, why to_morse checks with in before the lookup, and how from_morse finds a character from its pattern"
+        - label: "Building the code book: the author can explain what read_code_book does with each line of morse.csv and why main adds SK to it"
         - label: "Timing a press: the author can explain what press_length counts and why a short press is a dot"
         - label: "Ending a letter: the author can explain what the counter in the inner while loop counts and what stops that loop"
         - label: "The author described their process well, communicating confidence and understanding of their own code"

@@ -45,26 +45,15 @@ def test_the_books_are_built_in_loops():
     assert splits, "found no .split(...) in read_code_book: split each line at the comma"
     stores = [n for n in inside(book, ast.Subscript) if isinstance(n.ctx, ast.Store)]
     assert stores, "found no assignment to a key in read_code_book: each line adds one entry to the dictionary"
-    reverse = function("reverse_book")
-    stores = [
-        n for loop in inside(reverse, ast.For) for n in inside(loop, ast.Subscript) if isinstance(n.ctx, ast.Store)
-    ]
-    assert stores, (
-        "found no for loop in reverse_book that assigns to a key: one pass over the keys of the code book "
-        "builds the backwards book, with each pattern as a key and its character as the value"
+    assert inside(function("from_morse"), ast.For), (
+        "found no for loop in from_morse: visit each key of the code book and compare its pattern"
     )
     body = function("main")
-    adds = [n.lineno for n in inside(body, ast.Subscript) if isinstance(n.ctx, ast.Store)]
+    adds = [n for n in inside(body, ast.Subscript) if isinstance(n.ctx, ast.Store)]
     assert adds, 'found no assignment to a key in main: add SK to the code book with ...["SK"] = "...-.-"'
-    calls = [
-        n.lineno for n in inside(body, ast.Call)
-        if isinstance(n.func, ast.Name) and n.func.id == "reverse_book"
-    ]
-    assert calls, "main does not call reverse_book: build the backwards book from the code book"
-    assert min(adds) < min(calls), "main calls reverse_book before it adds SK: add SK first, so that it is flipped too"
 
 
-FUNCTIONS = ("read_code_book", "reverse_book", "to_morse", "from_morse", "press_length", "to_symbol", "read_letter")
+FUNCTIONS = ("read_code_book", "to_morse", "from_morse", "press_length", "to_symbol", "read_letter")
 
 
 def test_every_function_has_its_own_docstring():
@@ -106,4 +95,4 @@ def test_the_key_is_read_in_while_loops_and_main_counts_down_and_uses_the_functi
     assert countdowns, "found no for loop over range(start, stop, step) in main: count down before the first letter with range(3, 0, -1)"
     used = called_names(function("main"))
     missing = [name for name in ("read_code_book", "read_letter", "from_morse", "to_morse") if name not in used]
-    assert not missing, f"main does not call {', '.join(missing)}: main builds the books, keys letters, decodes them and prints the patterns"
+    assert not missing, f"main does not call {', '.join(missing)}: main builds the code book, keys letters, decodes them and prints the patterns"

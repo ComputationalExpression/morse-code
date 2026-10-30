@@ -151,19 +151,6 @@ def call(key, function, *args_after_pins):
 # The checks pass these books to your functions, so a function has to use its
 # parameter, not a dictionary of its own.
 CODE = {"S": "...", "O": "---", "A": ".-", "B": "-...", "H": "....", "I": "..", "5": ".....", "SK": "...-.-"}
-LETTERS = {pattern: character for character, pattern in CODE.items()}
-
-
-def test_reverse_book_flips_a_dictionary():
-    for book in ({"Q": "--.-", "E": ".", "T": "-"}, CODE):
-        original = dict(book)
-        got = program.reverse_book(book)
-        want = {pattern: character for character, pattern in original.items()}
-        assert got == want, (
-            f"reverse_book returned {got!r} for {original!r}, expected {want!r}: "
-            f"each pattern becomes a key, and its character the value"
-        )
-        assert book == original, "reverse_book changed the dictionary it was given: build a new one and return it"
 
 
 def test_read_code_book_loads_a_csv_file(tmp_path):
@@ -192,12 +179,12 @@ def test_to_morse_looks_up_each_character():
 def test_from_morse_looks_up_a_pattern():
     cases = [(".-", "A"), ("...", "S"), ("...-.-", "SK"), ("-.-.", "?"), (".......", "?"), ("", "?")]
     for pattern, want in cases:
-        got = program.from_morse(pattern, LETTERS)
-        assert got == want, f"from_morse({pattern!r}, letters) returned {got!r}, expected {want!r}: ? when the pattern is not a key of the backwards book"
-    made_up = {"--": "A", ".": "B"}
+        got = program.from_morse(pattern, CODE)
+        assert got == want, f"from_morse({pattern!r}, code) returned {got!r}, expected {want!r}: the character whose pattern matches, or ? when no character has that pattern"
+    made_up = {"A": "--", "B": "."}
     for pattern, want in (("--", "A"), (".-", "?")):
         got = program.from_morse(pattern, made_up)
-        assert got == want, f"from_morse({pattern!r}, {made_up!r}) returned {got!r}, expected {want!r}: look the pattern up in the letters parameter"
+        assert got == want, f"from_morse({pattern!r}, {made_up!r}) returned {got!r}, expected {want!r}: search the code parameter"
 
 
 def test_press_length_counts_tenths_of_a_second_and_lights_the_led():
@@ -271,7 +258,7 @@ def run_program(capsys, letters, name="JJ"):
         except AssertionError as error:
             raise AssertionError(
                 f"{error}. If the message never ended at SK, check that main adds SK to the code book "
-                f"before it calls reverse_book, and keeps reading letters until from_morse returns SK"
+                f"and keeps reading letters until from_morse returns SK"
             ) from None
     out, err = capsys.readouterr()
     assert err == "", "the program wrote to the error stream:\n" + err

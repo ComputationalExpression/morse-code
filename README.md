@@ -84,13 +84,11 @@ header line, then one line for each letter and digit with the character, a comma
 of dots and dashes, such as `S,...`. At the start of `main`, `read_code_book` reads it into a
 dictionary: each key is a character and each value is its pattern. `main` then adds one signal
 that is not a letter, `"SK"`, which is `...-.-`. A telegraph operator keys SK to sign off at the
-end of a transmission. Then `reverse_book` builds a second dictionary from the code book, the
-same book read backwards, where each pattern is a key and its value is the character. `main`
-adds SK before it calls `reverse_book`, so that SK is flipped as well.
+end of a transmission.
 
 **Looking up.** `to_morse` turns text into patterns with the code book. `from_morse` turns a
-pattern into a character with the backwards book, and gives `?` for a pattern that is not in
-it. `main` passes each function the book it needs.
+pattern back into a character by searching the same book for the character whose pattern
+matches, and gives `?` when no character has that pattern.
 
 **The key.** `press_length` times one press. `to_symbol` decides whether that press is a dot or
 a dash. `read_letter` keys symbols until a second passes without a press, and returns the
@@ -105,20 +103,19 @@ operator keys `SK`, and ends with the operator log.
 Write these above `main`. The names and parameters must match exactly, because the automated
 checks call each one directly with books of their own. `read_code_book` comes with its
 docstring, the line in triple quotes right under `def` that says what the function returns.
-Write one of your own for each of the other six. Docstrings are on [Week 10 Session 1, slide 6](https://computationalexpression.com/slides/week-10-session-1/#6).
+Write one of your own for each of the other five. Docstrings are on [Week 10 Session 1, slide 6](https://computationalexpression.com/slides/week-10-session-1/#6).
 
 |Function |What it does |Similar code in the slides |
 |:--------|:------------|:---------------------------|
 |`read_code_book(filename)` |Returns a dictionary from each character in the CSV file to its pattern. It skips the header line, splits each line at the comma, and strips the newline from the line first, so that a pattern is `".-"` and not `".-\n"` | [Week 10 Session 3, slides 2–3](https://computationalexpression.com/slides/week-10-session-3/#2)<br>[Week 9 Session 2, slides 14–15](https://computationalexpression.com/slides/week-09-session-2/#14) |
-|`reverse_book(code)` |Returns a new dictionary from each pattern in `code` to its character, built by a `for` loop over the keys of `code` | [Week 10 Session 3, slides 8–9](https://computationalexpression.com/slides/week-10-session-3/#8)<br>[Week 10 Session 2, slide 9](https://computationalexpression.com/slides/week-10-session-2/#9) |
 |`to_morse(text, code)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces. A character that is not a key of `code`, such as a space, is skipped. With the code book, `to_morse("sos", code)` returns `"... --- ..."` | [Week 10 Session 3, slides 4–5](https://computationalexpression.com/slides/week-10-session-3/#4)<br>[Week 10 Session 2, slides 7–8](https://computationalexpression.com/slides/week-10-session-2/#7) |
-|`from_morse(pattern, letters)` |Returns the character for `pattern` from `letters`, the backwards book, or `"?"` when `pattern` is not one of its keys | [Week 10 Session 3, slide 10](https://computationalexpression.com/slides/week-10-session-3/#10)<br>[Week 10 Session 2, slides 7–8](https://computationalexpression.com/slides/week-10-session-2/#7) |
-|`press_length(button, led)` |Returns how many tenths of a second the button stays down. While `button.value()` is `0`, the LED is on, the function calls `sleep(0.1)`, and a counter goes up by 1. When the button is released the LED goes off | [Week 10 Session 3, slide 15](https://computationalexpression.com/slides/week-10-session-3/#15)<br>[Week 8 Session 3, slides 6–7](https://computationalexpression.com/slides/week-08-session-3/#6) |
+|`from_morse(pattern, code)` |Returns the character in `code` whose pattern is `pattern`, found by a `for` loop over the keys of `code`, or `"?"` when no character has that pattern | [Week 10 Session 2, slides 9–10](https://computationalexpression.com/slides/week-10-session-2/#9) |
+|`press_length(button, led)` |Returns how many tenths of a second the button stays down. While `button.value()` is `0`, the LED is on, the function calls `sleep(0.1)`, and a counter goes up by 1. When the button is released the LED goes off | [Week 10 Session 3, slide 13](https://computationalexpression.com/slides/week-10-session-3/#13)<br>[Week 8 Session 3, slides 6–7](https://computationalexpression.com/slides/week-08-session-3/#6) |
 |`to_symbol(length)` |Returns `"."` when `length` is less than `3`, and `"-"` otherwise | [Week 9 Session 2, slides 8–9](https://computationalexpression.com/slides/week-09-session-2/#8) |
-|`read_letter(button, led)` |Waits for the first press. Then it adds a symbol to the pattern for every press, and after each press waits up to ten tenths of a second for the next one. When a full second passes with no press, the letter is over and the function returns its pattern | [Week 10 Session 3, slides 11–12](https://computationalexpression.com/slides/week-10-session-3/#11)<br>[Week 10 Session 1, slides 2–3](https://computationalexpression.com/slides/week-10-session-1/#2) |
+|`read_letter(button, led)` |Waits for the first press. Then it adds a symbol to the pattern for every press, and after each press waits up to ten tenths of a second for the next one. When a full second passes with no press, the letter is over and the function returns its pattern | [Week 10 Session 3, slides 9–10](https://computationalexpression.com/slides/week-10-session-3/#9)<br>[Week 10 Session 1, slides 2–3](https://computationalexpression.com/slides/week-10-session-1/#2) |
 
 For `main`: adding an entry to a dictionary is on [Week 10 Session 2, slide 5](https://computationalexpression.com/slides/week-10-session-2/#5), passing values to a
-function is on [Week 9 Session 2, slides 6–7](https://computationalexpression.com/slides/week-09-session-2/#6), and counting down with a step is on [Week 10 Session 3, slides 13–14](https://computationalexpression.com/slides/week-10-session-3/#13).
+function is on [Week 9 Session 2, slides 6–7](https://computationalexpression.com/slides/week-09-session-2/#6), and counting down with a step is on [Week 10 Session 3, slides 11–12](https://computationalexpression.com/slides/week-10-session-3/#11).
 
 A press that ends before 0.3 seconds is a dot. `PULL_UP` makes a press read `0` and a released
 button read `1`. Each of the loops that watch the button has to call `sleep`, or time never
@@ -226,23 +223,22 @@ uv run gatorgrade --config gatorgrade.yml
 
 Each check's description says what to look at when it fails. Under a failed check, gatorgrade
 also prints a `uv run pytest ...` command. Run it: the last lines say what a function returned
-and what was expected. Twelve of the checks are about your code:
+and what was expected. Thirteen of the checks are about your code:
 
-* `reverse_book` returns the backwards book of a dictionary, leaving the dictionary it was given unchanged
 * `read_code_book` returns a dictionary from the characters of a CSV file to their patterns
 * `to_morse` returns the patterns for a text from the book it is given, skipping characters that are not in it
-* `from_morse` returns the character for a pattern from the book it is given, and `?` for one that is not in it
+* `from_morse` returns the character whose pattern matches in the book it is given, and `?` when none does
 * `press_length` returns the length of a press in tenths of a second, with the LED on during it
 * `to_symbol` returns a dot or a dash
 * `read_letter` returns the pattern of one letter, ends it after a second without a press, and keeps a pause shorter than a second inside the letter
 * keying a message and then `SK` logs the decoded message, its length and its patterns
-* `read_code_book` uses `with open` and a loop over the lines, `reverse_book` uses a loop over the keys, and `main` adds `SK` before it calls `reverse_book`
-* each of the seven functions has a docstring of its own
+* `read_code_book` uses `with open` and a loop over the lines, `from_morse` uses a loop over the keys, and `main` adds `SK` to the code book
+* each of the six functions has a docstring of its own
 * `to_morse` checks each character with `in`
 * `press_length`, `read_letter` and `main` have `while` loops, `main` counts down with `range(3, 0, -1)`, and `main` calls the functions
 * no `TODO` markers remain, and there are at least six comments
 
-Partial credit is proportional: passing 9 of 12 checks earns `(9 ÷ 12) × 3.0 = 2.25` points.
+Partial credit is proportional: passing 10 of 13 checks earns `(10 ÷ 13) × 3.0 = 2.31` points.
 
 The remaining two checks look at `docs/summary.md`. They confirm the document is finished, and
 they count toward Summary writing below rather than toward these 3.0 points.
@@ -275,11 +271,11 @@ The reviewer opens a **Code Review** issue on your repository and fills it out d
 conversation. The reviewer asks one question about each of four concepts, in their own words
 and about your own code, so the questions differ from student to student. Be ready to:
 
-* **Dictionary lookup**: explain what a key and a value are in your code book, and why
-  `from_morse` checks with `in` before it looks a pattern up
-* **Building the books**: explain what `read_code_book` does with each line of `morse.csv`, what
-  the loop in `reverse_book` does on each trip/iteration, and why `main` adds `SK` before it
-  calls `reverse_book`
+* **Dictionary lookup**: explain what a key and a value are in your code book, why `to_morse`
+  checks with `in` before it looks a character up, and how `from_morse` finds a character from its
+  pattern
+* **Building the code book**: explain what `read_code_book` does with each line of `morse.csv`,
+  and why `main` adds `SK` to it
 * **Timing a press**: explain what `press_length` counts, and why a press under three tenths of
   a second is a dot
 * **Ending a letter**: explain what the counter in `read_letter`'s inner `while` loop counts,

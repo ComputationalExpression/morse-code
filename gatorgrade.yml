@@ -1,14 +1,9 @@
-# Sixteen checks: eight run or call your code, four read src/main.py as Python, two read its
+# Fifteen checks: seven run or call your code, four read src/main.py as Python, two read its
 # text, and two read docs/summary.md. The checks call your functions directly with arguments of
 # their own and compare what they return, and the program check reads only the operator log at
 # the end of a run, never the story lines. Log values forgive extra spaces and letter case. The
 # button is pressed by a pretend operator with a script of presses, and time passes only when
 # your program calls sleep, so a loop that watches the button without sleeping is stopped.
-
-- description: "[CODE BOOK] reverse_book(code) returns a new dictionary from each pattern in code to its character, and leaves code unchanged"
-  check: ExecuteCommand
-  options:
-    command: uv run pytest tests/test_morse.py::test_reverse_book_flips_a_dictionary
 
 - description: "[CODE BOOK] read_code_book(filename) returns a dictionary from each character to its pattern: skip the header line, split each line at the comma, and strip the newline"
   check: ExecuteCommand
@@ -20,7 +15,7 @@
   options:
     command: uv run pytest tests/test_morse.py::test_to_morse_looks_up_each_character
 
-- description: "[FROM MORSE] from_morse(pattern, letters) returns the character for a pattern from letters and ? for a pattern that is not one of its keys: check with in before the lookup"
+- description: "[FROM MORSE] from_morse(pattern, code) returns the character in code whose pattern matches, and ? when no character has that pattern: loop over the keys of code and compare each one's pattern"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_from_morse_looks_up_a_pattern
@@ -40,17 +35,17 @@
   options:
     command: uv run pytest tests/test_morse.py::test_read_letter_returns_one_pattern_after_a_pause
 
-- description: "[OPERATOR] Keying S O S then SK logs Message SOS, Letters 3 and Morse ... --- ..., and a pattern the book lacks becomes a ? in the message: main adds SK to the code book before it calls reverse_book, and keeps reading letters until SK"
+- description: "[OPERATOR] Keying S O S then SK logs Message SOS, Letters 3 and Morse ... --- ..., and a pattern the book lacks becomes a ? in the message: main adds SK to the code book, and keeps reading letters until SK"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_morse.py::test_the_program_decodes_a_message_until_sk
 
-- description: "[CODE] read_code_book uses with open, a for loop over the lines and split, reverse_book uses a for loop that assigns each character under its pattern, and main adds SK before it calls reverse_book"
+- description: "[CODE] read_code_book uses with open, a for loop over the lines and split, from_morse uses a for loop over the keys of code, and main adds SK to the code book"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_structure.py::test_the_books_are_built_in_loops
 
-- description: "[CODE] Each of the seven functions has a docstring of its own, a line in triple quotes right under def that says what the function returns"
+- description: "[CODE] Each of the six functions has a docstring of its own, a line in triple quotes right under def that says what the function returns"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_structure.py::test_every_function_has_its_own_docstring
@@ -72,7 +67,7 @@
       fragment: TODO
       count: 0
       exact: true
-  - description: "[CODE] At least six comments: explain why SK is added before reverse_book is called, or what the counter in read_letter counts"
+  - description: "[CODE] At least six comments: explain why SK is added to the code book, or what the counter in read_letter counts"
     check: CountSingleLineComments
     options:
       language: Python

@@ -38,16 +38,7 @@ def read_code_book(filename):
     #   - return the dictionary after the with block
 
 
-# TODO 2: write a function `reverse_book(code)` that returns the code book
-# read backwards, where each pattern is a key and its value is the character:
-#   - start a new empty dictionary (`letters`, for example)
-#   - write a for loop over `code`. On every trip/iteration the loop variable
-#     holds one key, a character
-#   - look up that character's pattern in `code`, and assign the character to
-#     the new dictionary with the pattern as the key
-#   - return the new dictionary
-
-# TODO 3: write a function `to_morse(text, code)` that returns the patterns
+# TODO 2: write a function `to_morse(text, code)` that returns the patterns
 # for the characters of text, separated by single spaces:
 #   - start the result as an empty string
 #   - loop over text.upper(), one character on each trip/iteration
@@ -57,20 +48,26 @@ def read_code_book(filename):
 #     the result is still empty
 # With the code book, to_morse("sos", code) returns "... --- ..."
 
-# TODO 4: write a function `from_morse(pattern, letters)` that returns the
-# character for a pattern from `letters`, the backwards book, or "?" when the
-# pattern is not one of its keys. Check with `in` before the lookup
+# TODO 3: write a function `from_morse(pattern, code)` that returns the
+# character in `code` whose pattern is `pattern`, or "?" when no character has
+# that pattern:
+#   - start the answer as "?"
+#   - write a for loop over `code`. On every trip/iteration the loop variable
+#     holds one key, a character
+#   - when that character's pattern in `code` equals `pattern`, the character
+#     is the answer
+#   - return the answer after the loop
 
-# TODO 5: write a function `press_length(button, led)` that returns how many
+# TODO 4: write a function `press_length(button, led)` that returns how many
 # tenths of a second the button stays down. Count the trips/iterations of a
 # while loop that runs while the button is pressed and sleeps 0.1 seconds on
 # each one. The LED is on during the press and off after it. PULL_UP makes a
 # press read 0
 
-# TODO 6: write a function `to_symbol(length)` that returns "." when length is
+# TODO 5: write a function `to_symbol(length)` that returns "." when length is
 # less than 3 and "-" otherwise
 
-# TODO 7: write a function `read_letter(button, led)` that returns the pattern
+# TODO 6: write a function `read_letter(button, led)` that returns the pattern
 # of one letter:
 #   - start the pattern as an empty string, and wait until the button is first
 #     pressed, sleeping 0.01 seconds on each trip/iteration of the wait
@@ -91,30 +88,28 @@ def main():
     button = Pin(16, Pin.IN, Pin.PULL_UP)
     led = Pin(15, Pin.OUT)
 
-    # TODO 8: build the two books:
+    # TODO 7: build the code book:
     #   - store the dictionary that read_code_book returns for "morse.csv" in a
     #     variable (`code`, for example)
     #   - add SK to it by assigning to a new key: "SK" is "...-.-"
-    #   - store what reverse_book returns for the code book in a second
-    #     variable (`letters`, for example). Add SK first, so it is flipped too
 
     print("=" * 50)
     print("MORSE CODE")
     print("=" * 50)
 
-    # TODO 9: ask the operator's name, and tell them to key a message that
+    # TODO 8: ask the operator's name, and tell them to key a message that
     # ends with SK
 
-    # TODO 10: count down before the first letter with a for loop over
+    # TODO 9: count down before the first letter with a for loop over
     # range(3, 0, -1). On every trip/iteration, print the count, then turn the
     # LED on, sleep(0.5), turn it off and sleep(0.5). After the loop, tell the
     # operator to start keying
 
-    # TODO 11: read letters with read_letter and decode each one with
+    # TODO 10: read letters with read_letter and decode each one with
     # from_morse until the letter is SK. Print each pattern with its letter,
     # and add every letter except SK to the end of the message
 
-    # TODO 12: print the operator log shown in the README: the OPERATOR LOG
+    # TODO 11: print the operator log shown in the README: the OPERATOR LOG
     # line with the name between two lines of "=", then the Message, Letters
     # and Morse lines. Morse is to_morse of the message
 
