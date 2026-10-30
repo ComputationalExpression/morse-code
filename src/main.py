@@ -53,8 +53,8 @@ def read_code_book(filename):
 #   - loop over text.upper(), one character on each trip/iteration
 #   - use `in` to check whether the character is a key of `code`, and skip it
 #     if it is not (a space, for example)
-#   - add its pattern to the result with +=, with a space before it unless the
-#     result is still empty
+#   - add its pattern to the end of the result, with a space before it unless
+#     the result is still empty
 # With the code book, to_morse("sos", code) returns "... --- ..."
 
 # TODO 4: write a function `from_morse(pattern, letters)` that returns the
@@ -112,7 +112,7 @@ def main():
 
     # TODO 11: read letters with read_letter and decode each one with
     # from_morse until the letter is SK. Print each pattern with its letter,
-    # and add every letter except SK to the message with +=
+    # and add every letter except SK to the end of the message
 
     # TODO 12: print the operator log shown in the README: the OPERATOR LOG
     # line with the name between two lines of "=", then the Message, Letters

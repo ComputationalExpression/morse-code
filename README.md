@@ -52,7 +52,7 @@ Specifically, by the end of this lab you should be able to:
   functions from other functions
 * write a docstring that says what a function returns
 * time a button press with a `while` loop and a counter
-* update a counter or a string with `+=`, and count down with `range(start, stop, step)`
+* update a counter with `+=`, and count down with `range(start, stop, step)`
 
 ## The circuit
 
@@ -111,7 +111,7 @@ Write one of your own for each of the other six. Docstrings are on [Week 10 Sess
 |:--------|:------------|:---------------------------|
 |`read_code_book(filename)` |Returns a dictionary from each character in the CSV file to its pattern. It skips the header line, splits each line at the comma, and strips the newline from the line first, so that a pattern is `".-"` and not `".-\n"` | [Week 10 Session 3, slides 2–3](https://computationalexpression.com/slides/week-10-session-3/#2)<br>[Week 9 Session 2, slides 14–15](https://computationalexpression.com/slides/week-09-session-2/#14) |
 |`reverse_book(code)` |Returns a new dictionary from each pattern in `code` to its character, built by a `for` loop over the keys of `code` | [Week 10 Session 3, slides 8–9](https://computationalexpression.com/slides/week-10-session-3/#8)<br>[Week 10 Session 2, slide 9](https://computationalexpression.com/slides/week-10-session-2/#9) |
-|`to_morse(text, code)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces, adding each pattern to the result with `+=`. A character that is not a key of `code`, such as a space, is skipped. With the code book, `to_morse("sos", code)` returns `"... --- ..."` | [Week 10 Session 3, slides 4–7](https://computationalexpression.com/slides/week-10-session-3/#4)<br>[Week 10 Session 2, slides 7–8](https://computationalexpression.com/slides/week-10-session-2/#7) |
+|`to_morse(text, code)` |Returns the patterns for the characters of `text`, in upper or lower case, separated by single spaces. A character that is not a key of `code`, such as a space, is skipped. With the code book, `to_morse("sos", code)` returns `"... --- ..."` | [Week 10 Session 3, slides 4–5](https://computationalexpression.com/slides/week-10-session-3/#4)<br>[Week 10 Session 2, slides 7–8](https://computationalexpression.com/slides/week-10-session-2/#7) |
 |`from_morse(pattern, letters)` |Returns the character for `pattern` from `letters`, the backwards book, or `"?"` when `pattern` is not one of its keys | [Week 10 Session 3, slide 10](https://computationalexpression.com/slides/week-10-session-3/#10)<br>[Week 10 Session 2, slides 7–8](https://computationalexpression.com/slides/week-10-session-2/#7) |
 |`press_length(button, led)` |Returns how many tenths of a second the button stays down. While `button.value()` is `0`, the LED is on, the function calls `sleep(0.1)`, and a counter goes up by 1. When the button is released the LED goes off | [Week 10 Session 3, slide 15](https://computationalexpression.com/slides/week-10-session-3/#15)<br>[Week 8 Session 3, slides 6–7](https://computationalexpression.com/slides/week-08-session-3/#6) |
 |`to_symbol(length)` |Returns `"."` when `length` is less than `3`, and `"-"` otherwise | [Week 9 Session 2, slides 8–9](https://computationalexpression.com/slides/week-09-session-2/#8) |
@@ -238,7 +238,7 @@ and what was expected. Twelve of the checks are about your code:
 * keying a message and then `SK` logs the decoded message, its length and its patterns
 * `read_code_book` uses `with open` and a loop over the lines, `reverse_book` uses a loop over the keys, and `main` adds `SK` before it calls `reverse_book`
 * each of the seven functions has a docstring of its own
-* `to_morse` checks each character with `in` and builds its result with `+=`
+* `to_morse` checks each character with `in`
 * `press_length`, `read_letter` and `main` have `while` loops, `main` counts down with `range(3, 0, -1)`, and `main` calls the functions
 * no `TODO` markers remain, and there are at least six comments
 

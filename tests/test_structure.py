@@ -87,8 +87,6 @@ def test_to_morse_loops_over_the_text_and_checks_the_book():
         if any(isinstance(op, (ast.In, ast.NotIn)) for op in n.ops)
     ]
     assert checks, "found no `in` or `not in` check in to_morse: skip a character the book does not have"
-    adds = [n for n in inside(body, ast.AugAssign) if isinstance(n.op, ast.Add)]
-    assert adds, "found no += in to_morse: add each pattern to the result with result += ..."
 
 
 def test_the_key_is_read_in_while_loops_and_main_counts_down_and_uses_the_functions():

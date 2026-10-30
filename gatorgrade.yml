@@ -55,7 +55,7 @@
   options:
     command: uv run pytest tests/test_structure.py::test_every_function_has_its_own_docstring
 
-- description: "[CODE] to_morse loops over the text, checks each character with in before the lookup, and adds each pattern to the result with +="
+- description: "[CODE] to_morse loops over the text, checks each character with in before the lookup"
   check: ExecuteCommand
   options:
     command: uv run pytest tests/test_structure.py::test_to_morse_loops_over_the_text_and_checks_the_book
