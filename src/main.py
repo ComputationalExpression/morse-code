@@ -88,28 +88,30 @@ def main():
     button = Pin(16, Pin.IN, Pin.PULL_UP)
     led = Pin(15, Pin.OUT)
 
-    # TODO 7: build the code book:
-    #   - store the dictionary that read_code_book returns for "morse.csv" in a
-    #     variable (`code`, for example)
-    #   - add SK to it by assigning to a new key: "SK" is "...-.-"
+    # The code book: each key is a character, and its value is the pattern of
+    # dots and dashes the operator keys for it
+    code = read_code_book("morse.csv")
+    # SK is not a letter, so it is not in the file. Assigning to a key that is
+    # not there adds an entry
+    code["SK"] = "...-.-"
 
     print("=" * 50)
     print("MORSE CODE")
     print("=" * 50)
 
-    # TODO 8: ask the operator's name, and tell them to key a message that
+    # TODO 7: ask the operator's name, and tell them to key a message that
     # ends with SK
 
-    # TODO 9: count down before the first letter with a for loop over
+    # TODO 8: count down before the first letter with a for loop over
     # range(3, 0, -1). On every trip/iteration, print the count, then turn the
     # LED on, sleep(0.5), turn it off and sleep(0.5). After the loop, tell the
     # operator to start keying
 
-    # TODO 10: read letters with read_letter and decode each one with
+    # TODO 9: read letters with read_letter and decode each one with
     # from_morse until the letter is SK. Print each pattern with its letter,
     # and add every letter except SK to the end of the message
 
-    # TODO 11: print the operator log shown in the README: the OPERATOR LOG
+    # TODO 10: print the operator log shown in the README: the OPERATOR LOG
     # line with the name between two lines of "=", then the Message, Letters
     # and Morse lines. Morse is to_morse of the message
 
