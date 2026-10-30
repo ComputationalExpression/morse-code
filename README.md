@@ -132,13 +132,13 @@ The log has these lines:
 ```text
 OPERATOR LOG: JJ
 ==================================================
-Message: SOS
-Letters: 3
-Morse: ... --- ...
+Message: GATORS
+Letters: 6
+Morse: --. .- - --- .-. ...
 ```
 
 `Message` holds the letters decoded before `SK`, with a `?` for any pattern that is not in the
-book. `Letters` is how many characters `Message` holds, and `Morse` is `to_morse(message)`.
+book. `Letters` is how many characters `Message` holds, and `Morse` is `to_morse(message, code)`.
 
 Print each line any of the three ways from Week 3: `print("Letters:", count)`,
 `print("Letters: " + str(count))`, or `print(f"Letters: {count}")` all pass. The checks forgive
@@ -146,7 +146,11 @@ extra spaces and letter case. The checks type the operator's name as the only an
 
 ### Expected output
 
-One complete run on the board, keying `S O S` and then `SK`:
+One complete run on the board, keying the message `GATORS` and then `SK`. Each letter is its
+presses followed by a one-second pause: for `G`, two long presses and one short (`--.`), then
+the pause, then `A`, one short and one long (`.-`), and so on to `S`. Last comes `SK`,
+`...-.-`, which ends the message. After each pause the program prints the pattern it read and
+its letter:
 
 ```text
 ==================================================
@@ -158,17 +162,20 @@ Key a message, JJ - end it with SK
 2
 1
 Key now
-... is S
+--. is G
+.- is A
+- is T
 --- is O
+.-. is R
 ... is S
 ...-.- is SK
 
 ==================================================
 OPERATOR LOG: JJ
 ==================================================
-Message: SOS
-Letters: 3
-Morse: ... --- ...
+Message: GATORS
+Letters: 6
+Morse: --. .- - --- .-. ...
 ```
 
 ## Getting started
