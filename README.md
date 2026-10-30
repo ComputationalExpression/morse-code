@@ -47,7 +47,7 @@ Specifically, by the end of this lab you should be able to:
 
 * read a CSV file into a dictionary, add an entry by assigning to a new key, and look a value up by its key
 * test whether a key is in a dictionary with `in` before a lookup that could fail
-* build one dictionary from another with a `for` loop over its keys
+* find the key that has a given value with a `for` loop over the keys
 * define functions with parameters that return a value, pass a dictionary to a function, and call
   functions from other functions
 * write a docstring that says what a function returns
@@ -56,15 +56,18 @@ Specifically, by the end of this lab you should be able to:
 
 ## The circuit
 
-You need the Lab 5 circuit, wired the same way. The button on GP16 is the key, and the light on
-GP15, `Pin(15, Pin.OUT)`, is the sounder. Unplug the USB cable
+You need one LED, in any color, on GP15, and the push button on GP16. The button is the key, and
+the LED, `Pin(15, Pin.OUT)`, is the sounder. If your Lab 5 board is still wired, unplug the
+lights on GP14 and GP13 with their resistors and jumpers, and keep the rest. Unplug the USB cable
 before you touch the wiring.
 
 ![The Pico 2 W pinout, with each pin's GP number](images/pico-2-pinout.svg)
 
-The Lab 5 circuit:
+The Lab 6 circuit:
 
-![Three LEDs on GP15, GP14 and GP13, and a push button on GP16, on a half breadboard](images/simon-circuit.svg)
+![One LED on GP15 and a push button on GP16, on a half breadboard](images/morse-circuit.svg)
+
+The LED's long leg goes in row 30, column d, on the resistor's side of the channel.
 
 If the program reads the button as pressed when nothing touches it, turn the button a quarter
 turn. If the button will not work, ask an instructor or TL. Do not troubleshoot hardware alone
@@ -208,7 +211,7 @@ This lab is worth **4.5 points**, the standard value for a lab in this course.
 
 | Component | Points | What it measures |
 |:----------|:-------|:-----------------|
-| Programming | 3.0 | The 12 code checks below. Your score is the fraction passed, times 3.0 |
+| Programming | 3.0 | The 13 code checks below. Your score is the fraction passed, times 3.0 |
 | Code quality and style | 1.0 | Descriptive names (0.3), clear organization (0.3), useful comments (0.4) |
 | Summary writing | 0.5 | A complete, thoughtful `docs/summary.md` |
 | **Total** | **4.5** | |
